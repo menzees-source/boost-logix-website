@@ -1116,6 +1116,179 @@
     .delay-3 { animation-delay: 0.35s; }
     .delay-4 { animation-delay: 0.5s; }
 
+    /* ══════════════════════════════════════════════════════════
+       INTERACTIVE DEMO
+    ══════════════════════════════════════════════════════════ */
+    #demo { padding: 80px 48px; }
+    #demo .section-title { text-align: center; }
+    .demo-tabs {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+    .demo-tab {
+      padding: 10px 22px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 5px;
+      color: var(--dim);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .demo-tab:hover { border-color: rgba(255,255,255,0.25); color: var(--text); }
+    .demo-tab.active {
+      background: rgba(255,0,85,0.12);
+      border-color: rgba(255,0,85,0.45);
+      color: var(--text);
+    }
+    .demo-panel {
+      max-width: 1020px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      background: rgba(7,7,26,0.95);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .demo-panel-left { padding: 24px; border-right: 1px solid var(--border); }
+    .demo-panel-right { padding: 24px; background: rgba(4,4,13,0.6); }
+    .demo-log-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .demo-log-badge {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #ff6a00;
+      background: rgba(255,106,0,0.1);
+      border: 1px solid rgba(255,106,0,0.3);
+      padding: 3px 10px;
+      border-radius: 3px;
+    }
+    .demo-log-meta { font-size: 11px; color: var(--dim); letter-spacing: 0.3px; }
+    .demo-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .demo-stat-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 12px 8px;
+      text-align: center;
+      transition: border-color 0.35s;
+    }
+    .demo-stat-box.s-safe    { border-color: rgba(0,229,180,0.35); }
+    .demo-stat-box.s-warning { border-color: rgba(255,106,0,0.45); }
+    .demo-stat-box.s-danger  { border-color: rgba(255,0,85,0.55);  }
+    .demo-stat-val {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      transition: color 0.35s;
+    }
+    .demo-stat-val.s-safe    { color: var(--safe); }
+    .demo-stat-val.s-warning { color: var(--orange); }
+    .demo-stat-val.s-danger  { color: var(--accent); }
+    .demo-stat-key { font-size: 9px; color: var(--dim); letter-spacing: 0.5px; text-transform: uppercase; }
+    .demo-chart-wrap {
+      background: rgba(0,0,0,0.35);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 14px;
+    }
+    .demo-chart-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--dim);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .demo-alerts-hdr {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--dim);
+      margin-bottom: 14px;
+    }
+    .demo-alert {
+      border-left: 3px solid var(--dim);
+      border-radius: 0 5px 5px 0;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.025);
+      transition: background 0.2s;
+    }
+    .demo-alert:hover { background: rgba(255,255,255,0.05); }
+    .demo-alert.level-good    { border-left-color: var(--safe); }
+    .demo-alert.level-warning { border-left-color: var(--orange); }
+    .demo-alert.level-danger  { border-left-color: var(--accent); }
+    .demo-alert-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .demo-alert-badge {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 7px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 2px 7px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .badge-good    { background: rgba(0,229,180,0.15); color: var(--safe); }
+    .badge-warning { background: rgba(255,106,0,0.18); color: var(--orange); }
+    .badge-danger  { background: rgba(255,0,85,0.18);  color: var(--accent); }
+    .demo-alert-param { font-family: 'Rajdhani',sans-serif; font-weight:700; font-size:13px; color:var(--text); }
+    .demo-alert-msg { font-size: 13px; color: var(--text); font-weight: 500; line-height: 1.4; }
+    .demo-alert-toggle { font-size: 10px; color: var(--dim); display: block; margin-top: 5px; }
+    .demo-alert-detail {
+      font-size: 12px;
+      color: #8888bb;
+      line-height: 1.65;
+      display: none;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .demo-alert.expanded .demo-alert-detail { display: block; }
+    .demo-alert.expanded .demo-alert-toggle::before { content: '▲ '; }
+    .demo-alert-toggle::before { content: '▼ '; }
+    .demo-hint {
+      text-align: center;
+      font-size: 11px;
+      color: var(--dim);
+      margin-top: 14px;
+      letter-spacing: 0.3px;
+    }
+    @media (max-width: 900px) {
+      #demo { padding: 70px 24px; }
+      .demo-panel { grid-template-columns: 1fr; }
+      .demo-panel-left { border-right: none; border-bottom: 1px solid var(--border); }
+      .demo-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .demo-tab { padding: 8px 12px; font-size: 12px; }
+      .demo-stat-val { font-size: 14px; }
+    }
+
     /* RPM line animation in dyno mock */
     @keyframes draw-power {
       from { stroke-dashoffset: 600; }
@@ -1140,6 +1313,7 @@
     <ul class="nav-links">
       <li><a href="#features">Features</a></li>
       <li><a href="#dyno">Virtual Dyno</a></li>
+      <li><a href="#demo">Live Demo</a></li>
       <li><a href="#how">How It Works</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#cta" class="nav-cta">Download</a></li>
@@ -1449,6 +1623,95 @@
     </div>
   </section>
 
+  <!-- ══ INTERACTIVE DEMO ══ -->
+  <section id="demo">
+    <div style="text-align:center;margin-bottom:40px;">
+      <p class="section-eyebrow">Try It Now</p>
+      <h2 class="section-title">See the Analysis in Action</h2>
+      <p class="section-sub">Pick a scenario — see exactly what Boost LogiX shows you when it reads a WOT log.</p>
+    </div>
+
+    <div class="demo-tabs">
+      <button class="demo-tab active" data-scenario="clean"   onclick="setScenario('clean')">✅ Clean Tune</button>
+      <button class="demo-tab"        data-scenario="knock"   onclick="setScenario('knock')">💥 Knock Event</button>
+      <button class="demo-tab"        data-scenario="lean"    onclick="setScenario('lean')">⚠️ Lean AFR</button>
+      <button class="demo-tab"        data-scenario="idc"     onclick="setScenario('idc')">💉 Injector Limit</button>
+    </div>
+
+    <div class="demo-panel">
+      <!-- Left: stats + chart -->
+      <div class="demo-panel-left">
+        <div class="demo-log-header">
+          <span class="demo-log-badge">WOT LOG</span>
+          <span class="demo-log-meta">RON98 · Evo X GSR · 2024-12-04</span>
+        </div>
+
+        <div class="demo-stats">
+          <div class="demo-stat-box" id="dsbox-knock">
+            <div class="demo-stat-val" id="dsval-knock">—</div>
+            <div class="demo-stat-key">Peak KnockSum</div>
+          </div>
+          <div class="demo-stat-box" id="dsbox-afr">
+            <div class="demo-stat-val" id="dsval-afr">—</div>
+            <div class="demo-stat-key">Peak AFR (WOT)</div>
+          </div>
+          <div class="demo-stat-box" id="dsbox-idc">
+            <div class="demo-stat-val" id="dsval-idc">—</div>
+            <div class="demo-stat-key">Peak IDC</div>
+          </div>
+          <div class="demo-stat-box" id="dsbox-boost">
+            <div class="demo-stat-val" id="dsval-boost">—</div>
+            <div class="demo-stat-key">Peak Boost</div>
+          </div>
+        </div>
+
+        <div class="demo-chart-wrap">
+          <div class="demo-chart-label">Air-Fuel Ratio — WOT Pull (TPS ≥ 90%)</div>
+          <svg id="demo-chart" viewBox="0 0 460 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;overflow:visible;">
+            <defs>
+              <linearGradient id="demoTargetGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00e5b4" stop-opacity="0.1"/>
+                <stop offset="100%" stop-color="#00e5b4" stop-opacity="0.03"/>
+              </linearGradient>
+            </defs>
+            <!-- Grid lines -->
+            <line x1="0" y1="22" x2="460" y2="22" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            <line x1="0" y1="45" x2="460" y2="45" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            <line x1="0" y1="67" x2="460" y2="67" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+            <!-- Target band: AFR 11.0–12.5 (y=22.8 to y=49.7) -->
+            <rect x="0" y="23" width="460" height="27" fill="url(#demoTargetGrad)"/>
+            <line x1="0" y1="23" x2="460" y2="23" stroke="rgba(0,229,180,0.22)" stroke-width="1" stroke-dasharray="5 4"/>
+            <line x1="0" y1="50" x2="460" y2="50" stroke="rgba(0,229,180,0.22)" stroke-width="1" stroke-dasharray="5 4"/>
+            <!-- Y-axis labels -->
+            <text x="463" y="10"  font-family="Orbitron,sans-serif" font-size="7" fill="#333366">10.0</text>
+            <text x="463" y="26"  font-family="Orbitron,sans-serif" font-size="7" fill="#44aa88">11.0</text>
+            <text x="463" y="53"  font-family="Orbitron,sans-serif" font-size="7" fill="#44aa88">12.5</text>
+            <text x="463" y="90"  font-family="Orbitron,sans-serif" font-size="7" fill="#333366">14.5</text>
+            <!-- Dynamic lines/dots drawn by JS -->
+          </svg>
+          <div style="display:flex;justify-content:space-between;margin-top:5px;">
+            <span style="font-family:'Orbitron',sans-serif;font-size:7px;color:#333366;">2,000</span>
+            <span style="font-family:'Orbitron',sans-serif;font-size:7px;color:#333366;">3,500</span>
+            <span style="font-family:'Orbitron',sans-serif;font-size:7px;color:#333366;">5,000</span>
+            <span style="font-family:'Orbitron',sans-serif;font-size:7px;color:#333366;">6,500</span>
+            <span style="font-family:'Orbitron',sans-serif;font-size:7px;color:#333366;">7,000 RPM</span>
+          </div>
+          <div style="display:flex;gap:20px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.05);">
+            <span style="font-size:11px;font-family:'Rajdhani',sans-serif;color:#00e5b4;">● AFR Reading</span>
+            <span style="font-size:11px;font-family:'Rajdhani',sans-serif;color:rgba(0,229,180,0.45);">- - Target Band (11.0–12.5)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: alerts -->
+      <div class="demo-panel-right">
+        <div class="demo-alerts-hdr">ANALYSIS ALERTS</div>
+        <div id="demo-alerts"></div>
+        <p class="demo-hint">Tap any alert for tuning advice</p>
+      </div>
+    </div>
+  </section>
+
   <!-- ══ HOW IT WORKS ══ -->
   <section id="how">
     <div class="how-header">
@@ -1639,6 +1902,167 @@
         }
       })
     }, { threshold: 0.15 })
+
+    // ── Interactive Log Analyser Demo ───────────────────────────────
+    const DEMO_SCENARIOS = {
+      clean: {
+        stats: {
+          knock: { val: '1',       cls: 's-safe' },
+          afr:   { val: '11.2',   cls: 's-safe' },
+          idc:   { val: '74.1%',  cls: 's-safe' },
+          boost: { val: '1.68 bar', cls: 's-safe' },
+        },
+        // [rpm, afr] pairs
+        afrData: [
+          [2000,12.1],[2500,12.0],[3000,11.8],[3500,11.5],
+          [4000,11.3],[4500,11.2],[5000,11.1],[5500,11.0],
+          [6000,11.1],[6500,11.2],[7000,11.3]
+        ],
+        alerts: [
+          { level:'good', param:'All Systems', msg:'No issues detected',
+            detail:'All monitored parameters are within acceptable ranges. Knock, AFR, IDC, boost, and IAT are nominal for a healthy WOT pull on RON98.' }
+        ]
+      },
+      knock: {
+        stats: {
+          knock: { val: '8',       cls: 's-danger' },
+          afr:   { val: '11.5',   cls: 's-safe' },
+          idc:   { val: '76.2%',  cls: 's-safe' },
+          boost: { val: '1.72 bar', cls: 's-safe' },
+        },
+        afrData: [
+          [2000,12.1],[2500,11.9],[3000,11.7],[3500,11.5],
+          [4000,11.4],[4500,11.3],[5000,11.2],[5500,11.0],
+          [6000,11.1],[6500,11.3],[7000,11.5]
+        ],
+        alerts: [
+          { level:'danger', param:'Knock', msg:'KnockSum peaked at 8 (safe ≤ 2)',
+            detail:'3 samples with KnockSum ≥ 6. At 8 counts = 2.8° total timing retard. The ECU activated OCTANE correction, degrading performance and richening fuel to protect the engine. Investigate detonation cause — check charge temps, tune aggression, and fuel quality. Do not increase boost until resolved.' }
+        ]
+      },
+      lean: {
+        stats: {
+          knock: { val: '4',       cls: 's-warning' },
+          afr:   { val: '13.5',   cls: 's-danger' },
+          idc:   { val: '82.4%',  cls: 's-warning' },
+          boost: { val: '1.65 bar', cls: 's-safe' },
+        },
+        afrData: [
+          [2000,12.0],[2500,11.8],[3000,11.6],[3500,11.5],
+          [4000,11.4],[4500,11.6],[5000,12.0],[5500,12.8],
+          [6000,13.2],[6500,13.5],[7000,13.1]
+        ],
+        alerts: [
+          { level:'danger', param:'AFR', msg:'Lean at WOT: 13.5:1 — target 11.0–12.5',
+            detail:'6 WOT data points above 13.0 AFR on RON98. Engine damage risk at sustained lean WOT. Investigate MAF scaling, boost leaks after the intercooler, or clogged fuel filter. Do not make another WOT pull until resolved.' },
+          { level:'warning', param:'Knock', msg:'KnockSum peaked at 4 (max acceptable: 3)',
+            detail:'Likely triggered by the lean condition — lean mixtures reduce knock resistance. Resolving the AFR issue should normalise KnockSum. Monitor on the next pull.' },
+          { level:'warning', param:'IDC', msg:'Injector duty cycle: 82.4% (warning > 80%)',
+            detail:'Approaching injector limits. IDC this high alongside a lean AFR suggests injectors are unable to supply sufficient fuel at peak load. Consider an injector upgrade alongside MAF recalibration.' }
+        ]
+      },
+      idc: {
+        stats: {
+          knock: { val: '1',       cls: 's-safe' },
+          afr:   { val: '12.0',   cls: 's-safe' },
+          idc:   { val: '93.8%',  cls: 's-danger' },
+          boost: { val: '1.71 bar', cls: 's-safe' },
+        },
+        afrData: [
+          [2000,12.1],[2500,11.9],[3000,11.7],[3500,11.5],
+          [4000,11.3],[4500,11.2],[5000,11.4],[5500,11.7],
+          [6000,11.9],[6500,12.0],[7000,12.0]
+        ],
+        alerts: [
+          { level:'danger', param:'IDC', msg:'Injector duty cycle: 93.8% (danger > 90%)',
+            detail:'Injectors are at maximum. Any further boost or power increase will cause a lean condition. Current injectors cannot sustain fuelling headroom at peak load. An injector upgrade is required before adding any more power.' }
+        ]
+      }
+    }
+
+    function demoAFRtoY(afr) { return 5 + (afr - 10.0) * (80 / 4.5) }
+    function demoRPMtoX(rpm) { return (rpm - 2000) / 5000 * 460 }
+    function demoAFRcolor(afr) {
+      if (afr > 13.0 || afr < 10.5) return '#ff0055'
+      if (afr > 12.5 || afr < 11.0) return '#ff6a00'
+      return '#00e5b4'
+    }
+
+    function demoRenderChart(afrData) {
+      const svg = document.getElementById('demo-chart')
+      svg.querySelectorAll('.demo-seg,.demo-dot,.demo-ring').forEach(el => el.remove())
+      const NS = 'http://www.w3.org/2000/svg'
+
+      for (let i = 0; i < afrData.length - 1; i++) {
+        const [r1,a1] = afrData[i], [r2,a2] = afrData[i+1]
+        const seg = document.createElementNS(NS, 'line')
+        seg.setAttribute('x1', demoRPMtoX(r1)); seg.setAttribute('y1', demoAFRtoY(a1))
+        seg.setAttribute('x2', demoRPMtoX(r2)); seg.setAttribute('y2', demoAFRtoY(a2))
+        seg.setAttribute('stroke', demoAFRcolor((a1+a2)/2))
+        seg.setAttribute('stroke-width','2.5')
+        seg.setAttribute('stroke-linecap','round')
+        seg.classList.add('demo-seg')
+        svg.appendChild(seg)
+      }
+      for (const [rpm,afr] of afrData) {
+        const danger = afr > 13.0 || afr < 10.5
+        const cx = demoRPMtoX(rpm), cy = demoAFRtoY(afr)
+        if (danger) {
+          const ring = document.createElementNS(NS, 'circle')
+          ring.setAttribute('cx', cx); ring.setAttribute('cy', cy)
+          ring.setAttribute('r','8'); ring.setAttribute('fill','none')
+          ring.setAttribute('stroke','#ff0055'); ring.setAttribute('stroke-width','1')
+          ring.setAttribute('opacity','0.4'); ring.classList.add('demo-ring')
+          svg.appendChild(ring)
+        }
+        const dot = document.createElementNS(NS, 'circle')
+        dot.setAttribute('cx', cx); dot.setAttribute('cy', cy)
+        dot.setAttribute('r', danger ? '4' : '3')
+        dot.setAttribute('fill', demoAFRcolor(afr))
+        dot.classList.add('demo-dot')
+        svg.appendChild(dot)
+      }
+    }
+
+    function setScenario(name) {
+      const s = DEMO_SCENARIOS[name]
+      // tabs
+      document.querySelectorAll('.demo-tab').forEach(b => {
+        b.classList.toggle('active', b.dataset.scenario === name)
+      })
+      // stats
+      const keys = ['knock','afr','idc','boost']
+      keys.forEach(k => {
+        const stat = s.stats[k]
+        const valEl = document.getElementById('dsval-' + k)
+        const boxEl = document.getElementById('dsbox-' + k)
+        valEl.textContent = stat.val
+        valEl.className = 'demo-stat-val ' + stat.cls
+        boxEl.className  = 'demo-stat-box ' + stat.cls
+      })
+      // chart
+      demoRenderChart(s.afrData)
+      // alerts
+      const alertsEl = document.getElementById('demo-alerts')
+      alertsEl.innerHTML = ''
+      s.alerts.forEach(a => {
+        const div = document.createElement('div')
+        div.className = 'demo-alert level-' + a.level
+        div.innerHTML =
+          '<div class="demo-alert-top">' +
+            '<span class="demo-alert-badge badge-' + a.level + '">' + a.level.toUpperCase() + '</span>' +
+            '<span class="demo-alert-param">' + a.param + '</span>' +
+          '</div>' +
+          '<div class="demo-alert-msg">' + a.msg + '</div>' +
+          '<span class="demo-alert-toggle">Tuning advice</span>' +
+          '<div class="demo-alert-detail">' + a.detail + '</div>'
+        div.addEventListener('click', () => div.classList.toggle('expanded'))
+        alertsEl.appendChild(div)
+      })
+    }
+
+    // Init demo with clean scenario
+    setScenario('clean')
 
     document.querySelectorAll('.feature-card, .how-step, .pricing-card, .vehicle-chip, .dyno-mock').forEach(el => {
       el.style.opacity = '0'
