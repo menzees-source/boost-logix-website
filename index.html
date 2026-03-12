@@ -1678,15 +1678,15 @@
             <line x1="0" y1="22" x2="460" y2="22" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
             <line x1="0" y1="45" x2="460" y2="45" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
             <line x1="0" y1="67" x2="460" y2="67" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-            <!-- Target band (shown for AFR, hidden for bar charts) -->
-            <rect id="demo-target-rect" x="0" y="23" width="460" height="27" fill="url(#demoTargetGrad)"/>
-            <line id="demo-target-top" x1="0" y1="23" x2="460" y2="23" stroke="rgba(0,229,180,0.22)" stroke-width="1" stroke-dasharray="5 4"/>
-            <line id="demo-target-bot" x1="0" y1="50" x2="460" y2="50" stroke="rgba(0,229,180,0.22)" stroke-width="1" stroke-dasharray="5 4"/>
-            <!-- Y-axis labels (updated by JS) -->
-            <text id="demo-yl-top" x="463" y="10"  font-family="Orbitron,sans-serif" font-size="7" fill="#333366">10.0</text>
-            <text id="demo-yl-m1"  x="463" y="26"  font-family="Orbitron,sans-serif" font-size="7" fill="#44aa88">11.0</text>
-            <text id="demo-yl-m2"  x="463" y="53"  font-family="Orbitron,sans-serif" font-size="7" fill="#44aa88">12.5</text>
-            <text id="demo-yl-bot" x="463" y="90"  font-family="Orbitron,sans-serif" font-size="7" fill="#333366">14.5</text>
+            <!-- Target band AFR 11.0–12.5 (lean=up scale: 11.0→y≈67, 12.5→y≈41) -->
+            <rect id="demo-target-rect" x="0" y="41" width="460" height="26" fill="url(#demoTargetGrad)"/>
+            <line id="demo-target-top" x1="0" y1="41" x2="460" y2="41" stroke="rgba(0,229,180,0.22)" stroke-width="1" stroke-dasharray="5 4"/>
+            <line id="demo-target-bot" x1="0" y1="67" x2="460" y2="67" stroke="rgba(0,229,180,0.22)" stroke-width="1" stroke-dasharray="5 4"/>
+            <!-- Y-axis labels (updated by JS per chart type) -->
+            <text id="demo-yl-top" x="463" y="10"  font-family="Orbitron,sans-serif" font-size="7" fill="#333366">14.5</text>
+            <text id="demo-yl-m1"  x="463" y="45"  font-family="Orbitron,sans-serif" font-size="7" fill="#44aa88">12.5</text>
+            <text id="demo-yl-m2"  x="463" y="72"  font-family="Orbitron,sans-serif" font-size="7" fill="#44aa88">11.0</text>
+            <text id="demo-yl-bot" x="463" y="90"  font-family="Orbitron,sans-serif" font-size="7" fill="#333366">10.0</text>
             <!-- Dynamic content drawn by JS -->
           </svg>
           <div style="display:flex;justify-content:space-between;margin-top:5px;">
@@ -1987,109 +1987,123 @@
       }
     }
 
+    // lean=up: afrToY flipped — high AFR (lean) rises on chart
     const NS = 'http://www.w3.org/2000/svg'
     function rpmToX(rpm) { return (rpm - 2000) / 5000 * 460 }
-    function afrToY(afr) { return 5 + (afr - 10.0) * (80 / 4.5) }
+    function afrToY(afr)   { return 85 - (afr - 10.0) * (80 / 4.5) }
+    function knockToY(v)   { return 85 - (v / 10)  * 80 }
+    function idcToY(v)     { return 85 - (v / 100) * 80 }
+
     function afrColor(afr) {
       if (afr > 13.0 || afr < 10.5) return '#ff0055'
       if (afr > 12.5 || afr < 11.0) return '#ff6a00'
       return '#00e5b4'
     }
+    function knockColor(v) {
+      if (v >= 6) return '#ff0055'
+      if (v >= 3) return '#ff6a00'
+      return '#00e5b4'
+    }
+    function idcColor(v) {
+      if (v >= 90) return '#ff0055'
+      if (v >= 80) return '#ff6a00'
+      return '#00e5b4'
+    }
 
-    function renderAFR(svg, data) {
+    // Unified scatter line + dot renderer (used for all chart types)
+    function renderScatter(svg, data, toY, colorFn, isDanger) {
       for (let i = 0; i < data.length - 1; i++) {
-        const [r1,a1] = data[i], [r2,a2] = data[i+1]
+        const [r1,v1] = data[i], [r2,v2] = data[i+1]
         const seg = document.createElementNS(NS, 'line')
-        seg.setAttribute('x1', rpmToX(r1)); seg.setAttribute('y1', afrToY(a1))
-        seg.setAttribute('x2', rpmToX(r2)); seg.setAttribute('y2', afrToY(a2))
-        seg.setAttribute('stroke', afrColor((a1+a2)/2))
+        seg.setAttribute('x1', rpmToX(r1)); seg.setAttribute('y1', toY(v1))
+        seg.setAttribute('x2', rpmToX(r2)); seg.setAttribute('y2', toY(v2))
+        seg.setAttribute('stroke', colorFn((v1+v2)/2))
         seg.setAttribute('stroke-width','2.5'); seg.setAttribute('stroke-linecap','round')
         seg.classList.add('demo-dyn'); svg.appendChild(seg)
       }
-      for (const [rpm,afr] of data) {
-        const danger = afr > 13.0 || afr < 10.5
-        const cx = rpmToX(rpm), cy = afrToY(afr)
+      for (const [rpm, val] of data) {
+        const cx = rpmToX(rpm), cy = toY(val)
+        const danger = isDanger(val)
         if (danger) {
           const ring = document.createElementNS(NS, 'circle')
           ring.setAttribute('cx', cx); ring.setAttribute('cy', cy)
           ring.setAttribute('r','9'); ring.setAttribute('fill','none')
-          ring.setAttribute('stroke','#ff0055'); ring.setAttribute('stroke-width','1.5')
-          ring.setAttribute('opacity','0.55'); ring.classList.add('demo-dyn'); svg.appendChild(ring)
+          ring.setAttribute('stroke', colorFn(val)); ring.setAttribute('stroke-width','1.5')
+          ring.setAttribute('opacity','0.5'); ring.classList.add('demo-dyn'); svg.appendChild(ring)
         }
         const dot = document.createElementNS(NS, 'circle')
         dot.setAttribute('cx', cx); dot.setAttribute('cy', cy)
-        dot.setAttribute('r', danger ? '4.5' : '3'); dot.setAttribute('fill', afrColor(afr))
+        dot.setAttribute('r', danger ? '4.5' : '3.5')
+        dot.setAttribute('fill', colorFn(val))
         dot.classList.add('demo-dyn'); svg.appendChild(dot)
       }
     }
 
-    function renderBars(svg, data, maxVal, thresh) {
-      // thresh: [{val,color}] for horizontal limit lines
-      for (const t of thresh) {
-        const y = 85 - (t.val / maxVal) * 80
+    // Horizontal threshold guide lines
+    function renderThresh(svg, thresholds) {
+      for (const t of thresholds) {
         const l = document.createElementNS(NS, 'line')
-        l.setAttribute('x1','0'); l.setAttribute('y1', y)
-        l.setAttribute('x2','460'); l.setAttribute('y2', y)
+        l.setAttribute('x1','0'); l.setAttribute('y1', t.y)
+        l.setAttribute('x2','460'); l.setAttribute('y2', t.y)
         l.setAttribute('stroke', t.color); l.setAttribute('stroke-width','1')
-        l.setAttribute('stroke-dasharray','4 3'); l.setAttribute('opacity','0.6')
+        l.setAttribute('stroke-dasharray','4 3'); l.setAttribute('opacity','0.55')
         l.classList.add('demo-dyn'); svg.appendChild(l)
       }
-      for (const [rpm, val] of data) {
-        const barH = Math.max(2, (val / maxVal) * 80)
-        const by = 85 - barH, cx = rpmToX(rpm)
-        const color = thresh.length >= 2
-          ? (val >= thresh[1].val ? '#ff0055' : val >= thresh[0].val ? '#ff6a00' : '#00e5b4')
-          : '#00e5b4'
-        const rect = document.createElementNS(NS, 'rect')
-        rect.setAttribute('x', cx - 17); rect.setAttribute('y', by)
-        rect.setAttribute('width', 34); rect.setAttribute('height', barH)
-        rect.setAttribute('fill', color); rect.setAttribute('rx','2')
-        rect.setAttribute('opacity','0.88')
-        rect.classList.add('demo-dyn'); svg.appendChild(rect)
-      }
+    }
+
+    function setYLabels(topTxt, m1y, m1txt, m1fill, m2y, m2txt, m2fill, botTxt) {
+      document.getElementById('demo-yl-top').textContent = topTxt
+      document.getElementById('demo-yl-m1').setAttribute('y', m1y)
+      document.getElementById('demo-yl-m1').setAttribute('fill', m1fill)
+      document.getElementById('demo-yl-m1').textContent = m1txt
+      document.getElementById('demo-yl-m2').setAttribute('y', m2y)
+      document.getElementById('demo-yl-m2').setAttribute('fill', m2fill)
+      document.getElementById('demo-yl-m2').textContent = m2txt
+      document.getElementById('demo-yl-bot').textContent = botTxt
     }
 
     function demoRenderChart(s) {
       const svg = document.getElementById('demo-chart')
       svg.querySelectorAll('.demo-dyn').forEach(el => el.remove())
+      document.getElementById('demo-chart-label-el').textContent = s.chartLabel
       const showBand = s.chartType === 'afr'
       ;['demo-target-rect','demo-target-top','demo-target-bot'].forEach(id => {
         document.getElementById(id).style.display = showBand ? '' : 'none'
       })
-      document.getElementById('demo-chart-label-el').textContent = s.chartLabel
 
       if (s.chartType === 'afr') {
-        document.getElementById('demo-yl-top').textContent = '10.0'
-        document.getElementById('demo-yl-m1').textContent  = '11.0'
-        document.getElementById('demo-yl-m2').textContent  = '12.5'
-        document.getElementById('demo-yl-bot').textContent = '14.5'
+        // lean (high AFR) = up: 14.5 at top, 10.0 at bottom
+        setYLabels('14.5', 45, '12.5', '#44aa88', 72, '11.0', '#44aa88', '10.0')
         document.getElementById('demo-chart-legend').innerHTML =
           '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#00e5b4;">&#9679; AFR Reading</span>' +
-          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:rgba(0,229,180,0.45);">- - Target Band (11.0&#x2013;12.5)</span>'
-        renderAFR(svg, s.chartData)
+          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:rgba(0,229,180,0.45);">- - Target Band (11.0–12.5)</span>'
+        renderScatter(svg, s.chartData, afrToY, afrColor, v => v > 13.0)
+
       } else if (s.chartType === 'knocksum') {
-        document.getElementById('demo-yl-top').textContent = '10'
-        document.getElementById('demo-yl-m1').textContent  = '6'
-        document.getElementById('demo-yl-m2').textContent  = '2'
-        document.getElementById('demo-yl-bot').textContent = '0'
+        setYLabels('10', 42, '6', '#ff0055', 69, '2', '#00e5b4', '0')
+        renderThresh(svg, [
+          { y: knockToY(6), color: '#ff0055' },
+          { y: knockToY(2), color: '#00e5b4' },
+        ])
         document.getElementById('demo-chart-legend').innerHTML =
-          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#00e5b4;">&#9632; Safe (0&#x2013;2)</span>' +
-          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#ff6a00;">&#9632; Monitor (3&#x2013;5)</span>' +
-          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#ff0055;">&#9632; Danger (6+)</span>'
-        renderBars(svg, s.chartData, 10, [{val:2,color:'#00e5b4'},{val:6,color:'#ff0055'}])
+          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#00e5b4;">&#9679; Safe (0–2)</span>' +
+          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#ff6a00;">&#9679; Monitor (3–5)</span>' +
+          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#ff0055;">&#9679; Danger (6+)</span>'
+        renderScatter(svg, s.chartData, knockToY, knockColor, v => v >= 6)
+
       } else if (s.chartType === 'idc') {
-        document.getElementById('demo-yl-top').textContent = '100%'
-        document.getElementById('demo-yl-m1').textContent  = '90%'
-        document.getElementById('demo-yl-m2').textContent  = '80%'
-        document.getElementById('demo-yl-bot').textContent = '0%'
+        setYLabels('100%', 19, '90%', '#ff0055', 27, '80%', '#ff6a00', '0%')
+        renderThresh(svg, [
+          { y: idcToY(90), color: '#ff0055' },
+          { y: idcToY(80), color: '#ff6a00' },
+        ])
         document.getElementById('demo-chart-legend').innerHTML =
-          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#00e5b4;">&#9632; Safe (&lt;80%)</span>' +
-          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#ff6a00;">&#9632; Warning (80&#x2013;90%)</span>' +
-          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#ff0055;">&#9632; Danger (&gt;90%)</span>'
-        renderBars(svg, s.chartData, 100, [{val:80,color:'#ff6a00'},{val:90,color:'#ff0055'}])
+          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#00e5b4;">&#9679; Safe (&lt;80%)</span>' +
+          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#ff6a00;">&#9679; Warning (80–90%)</span>' +
+          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#ff0055;">&#9679; Danger (&gt;90%)</span>'
+        renderScatter(svg, s.chartData, idcToY, idcColor, v => v >= 90)
       }
     }
-
     function setScenario(name) {
       const s = DEMO_SCENARIOS[name]
       document.querySelectorAll('.demo-tab').forEach(b => {
