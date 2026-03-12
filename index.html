@@ -1666,7 +1666,7 @@
         </div>
 
         <div class="demo-chart-wrap">
-          <div class="demo-chart-label">Air-Fuel Ratio — WOT Pull (TPS ≥ 90%)</div>
+          <div class="demo-chart-label" id="demo-chart-label-el">Air-Fuel Ratio — WOT Pull (TPS ≥ 90%)</div>
           <svg id="demo-chart" viewBox="0 0 460 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;overflow:visible;">
             <defs>
               <linearGradient id="demoTargetGrad" x1="0" y1="0" x2="0" y2="1">
@@ -1678,16 +1678,16 @@
             <line x1="0" y1="22" x2="460" y2="22" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
             <line x1="0" y1="45" x2="460" y2="45" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
             <line x1="0" y1="67" x2="460" y2="67" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-            <!-- Target band: AFR 11.0–12.5 (y=22.8 to y=49.7) -->
-            <rect x="0" y="23" width="460" height="27" fill="url(#demoTargetGrad)"/>
-            <line x1="0" y1="23" x2="460" y2="23" stroke="rgba(0,229,180,0.22)" stroke-width="1" stroke-dasharray="5 4"/>
-            <line x1="0" y1="50" x2="460" y2="50" stroke="rgba(0,229,180,0.22)" stroke-width="1" stroke-dasharray="5 4"/>
-            <!-- Y-axis labels -->
-            <text x="463" y="10"  font-family="Orbitron,sans-serif" font-size="7" fill="#333366">10.0</text>
-            <text x="463" y="26"  font-family="Orbitron,sans-serif" font-size="7" fill="#44aa88">11.0</text>
-            <text x="463" y="53"  font-family="Orbitron,sans-serif" font-size="7" fill="#44aa88">12.5</text>
-            <text x="463" y="90"  font-family="Orbitron,sans-serif" font-size="7" fill="#333366">14.5</text>
-            <!-- Dynamic lines/dots drawn by JS -->
+            <!-- Target band (shown for AFR, hidden for bar charts) -->
+            <rect id="demo-target-rect" x="0" y="23" width="460" height="27" fill="url(#demoTargetGrad)"/>
+            <line id="demo-target-top" x1="0" y1="23" x2="460" y2="23" stroke="rgba(0,229,180,0.22)" stroke-width="1" stroke-dasharray="5 4"/>
+            <line id="demo-target-bot" x1="0" y1="50" x2="460" y2="50" stroke="rgba(0,229,180,0.22)" stroke-width="1" stroke-dasharray="5 4"/>
+            <!-- Y-axis labels (updated by JS) -->
+            <text id="demo-yl-top" x="463" y="10"  font-family="Orbitron,sans-serif" font-size="7" fill="#333366">10.0</text>
+            <text id="demo-yl-m1"  x="463" y="26"  font-family="Orbitron,sans-serif" font-size="7" fill="#44aa88">11.0</text>
+            <text id="demo-yl-m2"  x="463" y="53"  font-family="Orbitron,sans-serif" font-size="7" fill="#44aa88">12.5</text>
+            <text id="demo-yl-bot" x="463" y="90"  font-family="Orbitron,sans-serif" font-size="7" fill="#333366">14.5</text>
+            <!-- Dynamic content drawn by JS -->
           </svg>
           <div style="display:flex;justify-content:space-between;margin-top:5px;">
             <span style="font-family:'Orbitron',sans-serif;font-size:7px;color:#333366;">2,000</span>
@@ -1696,7 +1696,7 @@
             <span style="font-family:'Orbitron',sans-serif;font-size:7px;color:#333366;">6,500</span>
             <span style="font-family:'Orbitron',sans-serif;font-size:7px;color:#333366;">7,000 RPM</span>
           </div>
-          <div style="display:flex;gap:20px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.05);">
+          <div id="demo-chart-legend" style="display:flex;gap:20px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.05);">
             <span style="font-size:11px;font-family:'Rajdhani',sans-serif;color:#00e5b4;">● AFR Reading</span>
             <span style="font-size:11px;font-family:'Rajdhani',sans-serif;color:rgba(0,229,180,0.45);">- - Target Band (11.0–12.5)</span>
           </div>
@@ -1907,16 +1907,17 @@
     const DEMO_SCENARIOS = {
       clean: {
         stats: {
-          knock: { val: '1',       cls: 's-safe' },
-          afr:   { val: '11.2',   cls: 's-safe' },
-          idc:   { val: '74.1%',  cls: 's-safe' },
-          boost: { val: '1.68 bar', cls: 's-safe' },
+          knock: { val: '1',        cls: 's-safe'    },
+          afr:   { val: '11.2',    cls: 's-safe'    },
+          idc:   { val: '74.1%',   cls: 's-safe'    },
+          boost: { val: '1.68 bar', cls: 's-safe'   },
         },
-        // [rpm, afr] pairs
-        afrData: [
-          [2000,12.1],[2500,12.0],[3000,11.8],[3500,11.5],
-          [4000,11.3],[4500,11.2],[5000,11.1],[5500,11.0],
-          [6000,11.1],[6500,11.2],[7000,11.3]
+        chartType: 'afr',
+        chartLabel: 'Air-Fuel Ratio — WOT Pull (TPS ≥ 90%)',
+        chartData: [
+          [2000,12.1],[2500,11.9],[3000,11.7],[3500,11.4],
+          [4000,11.2],[4500,11.1],[5000,11.1],[5500,11.2],
+          [6000,11.3],[6500,11.4],[7000,11.5]
         ],
         alerts: [
           { level:'good', param:'All Systems', msg:'No issues detected',
@@ -1925,124 +1926,182 @@
       },
       knock: {
         stats: {
-          knock: { val: '8',       cls: 's-danger' },
-          afr:   { val: '11.5',   cls: 's-safe' },
-          idc:   { val: '76.2%',  cls: 's-safe' },
-          boost: { val: '1.72 bar', cls: 's-safe' },
+          knock: { val: '8',        cls: 's-danger'  },
+          afr:   { val: '11.5',    cls: 's-safe'    },
+          idc:   { val: '76.2%',   cls: 's-safe'    },
+          boost: { val: '1.72 bar', cls: 's-safe'   },
         },
-        afrData: [
-          [2000,12.1],[2500,11.9],[3000,11.7],[3500,11.5],
-          [4000,11.4],[4500,11.3],[5000,11.2],[5500,11.0],
-          [6000,11.1],[6500,11.3],[7000,11.5]
+        chartType: 'knocksum',
+        chartLabel: 'KnockSum — WOT Pull (safe 0–2 · monitor 3–5 · danger 6+)',
+        chartData: [
+          [2000,0],[2500,0],[3000,1],[3500,2],
+          [4000,4],[4500,6],[5000,8],[5500,7],
+          [6000,5],[6500,3],[7000,2]
         ],
         alerts: [
           { level:'danger', param:'Knock', msg:'KnockSum peaked at 8 (safe ≤ 2)',
-            detail:'3 samples with KnockSum ≥ 6. At 8 counts = 2.8° total timing retard. The ECU activated OCTANE correction, degrading performance and richening fuel to protect the engine. Investigate detonation cause — check charge temps, tune aggression, and fuel quality. Do not increase boost until resolved.' }
+            detail:'3 samples with KnockSum 6+. At 8 counts = 2.8° total timing retard. The ECU activated OCTANE correction, degrading performance. Investigate detonation cause — check charge temps, tune aggression, and fuel quality. Do not increase boost until resolved.' }
         ]
       },
       lean: {
         stats: {
-          knock: { val: '4',       cls: 's-warning' },
-          afr:   { val: '13.5',   cls: 's-danger' },
-          idc:   { val: '82.4%',  cls: 's-warning' },
-          boost: { val: '1.65 bar', cls: 's-safe' },
+          knock: { val: '4',        cls: 's-warning' },
+          afr:   { val: '14.1',    cls: 's-danger'  },
+          idc:   { val: '82.4%',   cls: 's-warning' },
+          boost: { val: '1.65 bar', cls: 's-safe'   },
         },
-        afrData: [
-          [2000,12.0],[2500,11.8],[3000,11.6],[3500,11.5],
-          [4000,11.4],[4500,11.6],[5000,12.0],[5500,12.8],
-          [6000,13.2],[6500,13.5],[7000,13.1]
+        chartType: 'afr',
+        chartLabel: 'Air-Fuel Ratio — WOT Pull (TPS ≥ 90%)',
+        chartData: [
+          [2000,12.0],[2500,11.7],[3000,11.4],[3500,11.3],
+          [4000,11.5],[4500,12.0],[5000,12.7],[5500,13.3],
+          [6000,13.8],[6500,14.1],[7000,13.6]
         ],
         alerts: [
-          { level:'danger', param:'AFR', msg:'Lean at WOT: 13.5:1 — target 11.0–12.5',
-            detail:'6 WOT data points above 13.0 AFR on RON98. Engine damage risk at sustained lean WOT. Investigate MAF scaling, boost leaks after the intercooler, or clogged fuel filter. Do not make another WOT pull until resolved.' },
+          { level:'danger', param:'AFR', msg:'Lean at WOT: 14.1:1 — target 11.0–12.5',
+            detail:'5 WOT data points above 13.0 AFR on RON98. Engine damage risk. Investigate MAF scaling, boost leaks after the intercooler, or a clogged fuel filter. Do not make another WOT pull until resolved.' },
           { level:'warning', param:'Knock', msg:'KnockSum peaked at 4 (max acceptable: 3)',
-            detail:'Likely triggered by the lean condition — lean mixtures reduce knock resistance. Resolving the AFR issue should normalise KnockSum. Monitor on the next pull.' },
+            detail:'Likely triggered by the lean condition — lean mixtures reduce knock resistance. Resolving the AFR issue should normalise KnockSum.' },
           { level:'warning', param:'IDC', msg:'Injector duty cycle: 82.4% (warning > 80%)',
-            detail:'Approaching injector limits. IDC this high alongside a lean AFR suggests injectors are unable to supply sufficient fuel at peak load. Consider an injector upgrade alongside MAF recalibration.' }
+            detail:'Injectors approaching their limit at the same RPM where AFR goes lean — consistent with injectors being unable to supply enough fuel at peak load. Injector upgrade needed alongside MAF recalibration.' }
         ]
       },
       idc: {
         stats: {
-          knock: { val: '1',       cls: 's-safe' },
-          afr:   { val: '12.0',   cls: 's-safe' },
-          idc:   { val: '93.8%',  cls: 's-danger' },
-          boost: { val: '1.71 bar', cls: 's-safe' },
+          knock: { val: '1',        cls: 's-safe'    },
+          afr:   { val: '12.0',    cls: 's-safe'    },
+          idc:   { val: '93.8%',   cls: 's-danger'  },
+          boost: { val: '1.71 bar', cls: 's-safe'   },
         },
-        afrData: [
-          [2000,12.1],[2500,11.9],[3000,11.7],[3500,11.5],
-          [4000,11.3],[4500,11.2],[5000,11.4],[5500,11.7],
-          [6000,11.9],[6500,12.0],[7000,12.0]
+        chartType: 'idc',
+        chartLabel: 'Injector Duty Cycle — WOT Pull (warning > 80% · danger > 90%)',
+        chartData: [
+          [2000,44],[2500,52],[3000,60],[3500,67],
+          [4000,73],[4500,79],[5000,85],[5500,89],
+          [6000,92],[6500,94],[7000,93]
         ],
         alerts: [
           { level:'danger', param:'IDC', msg:'Injector duty cycle: 93.8% (danger > 90%)',
-            detail:'Injectors are at maximum. Any further boost or power increase will cause a lean condition. Current injectors cannot sustain fuelling headroom at peak load. An injector upgrade is required before adding any more power.' }
+            detail:'Injectors are at maximum. Any further boost or power increase will cause a lean condition and risk engine damage. An injector upgrade is required before adding any more power.' }
         ]
       }
     }
 
-    function demoAFRtoY(afr) { return 5 + (afr - 10.0) * (80 / 4.5) }
-    function demoRPMtoX(rpm) { return (rpm - 2000) / 5000 * 460 }
-    function demoAFRcolor(afr) {
+    const NS = 'http://www.w3.org/2000/svg'
+    function rpmToX(rpm) { return (rpm - 2000) / 5000 * 460 }
+    function afrToY(afr) { return 5 + (afr - 10.0) * (80 / 4.5) }
+    function afrColor(afr) {
       if (afr > 13.0 || afr < 10.5) return '#ff0055'
       if (afr > 12.5 || afr < 11.0) return '#ff6a00'
       return '#00e5b4'
     }
 
-    function demoRenderChart(afrData) {
-      const svg = document.getElementById('demo-chart')
-      svg.querySelectorAll('.demo-seg,.demo-dot,.demo-ring').forEach(el => el.remove())
-      const NS = 'http://www.w3.org/2000/svg'
-
-      for (let i = 0; i < afrData.length - 1; i++) {
-        const [r1,a1] = afrData[i], [r2,a2] = afrData[i+1]
+    function renderAFR(svg, data) {
+      for (let i = 0; i < data.length - 1; i++) {
+        const [r1,a1] = data[i], [r2,a2] = data[i+1]
         const seg = document.createElementNS(NS, 'line')
-        seg.setAttribute('x1', demoRPMtoX(r1)); seg.setAttribute('y1', demoAFRtoY(a1))
-        seg.setAttribute('x2', demoRPMtoX(r2)); seg.setAttribute('y2', demoAFRtoY(a2))
-        seg.setAttribute('stroke', demoAFRcolor((a1+a2)/2))
-        seg.setAttribute('stroke-width','2.5')
-        seg.setAttribute('stroke-linecap','round')
-        seg.classList.add('demo-seg')
-        svg.appendChild(seg)
+        seg.setAttribute('x1', rpmToX(r1)); seg.setAttribute('y1', afrToY(a1))
+        seg.setAttribute('x2', rpmToX(r2)); seg.setAttribute('y2', afrToY(a2))
+        seg.setAttribute('stroke', afrColor((a1+a2)/2))
+        seg.setAttribute('stroke-width','2.5'); seg.setAttribute('stroke-linecap','round')
+        seg.classList.add('demo-dyn'); svg.appendChild(seg)
       }
-      for (const [rpm,afr] of afrData) {
+      for (const [rpm,afr] of data) {
         const danger = afr > 13.0 || afr < 10.5
-        const cx = demoRPMtoX(rpm), cy = demoAFRtoY(afr)
+        const cx = rpmToX(rpm), cy = afrToY(afr)
         if (danger) {
           const ring = document.createElementNS(NS, 'circle')
           ring.setAttribute('cx', cx); ring.setAttribute('cy', cy)
-          ring.setAttribute('r','8'); ring.setAttribute('fill','none')
-          ring.setAttribute('stroke','#ff0055'); ring.setAttribute('stroke-width','1')
-          ring.setAttribute('opacity','0.4'); ring.classList.add('demo-ring')
-          svg.appendChild(ring)
+          ring.setAttribute('r','9'); ring.setAttribute('fill','none')
+          ring.setAttribute('stroke','#ff0055'); ring.setAttribute('stroke-width','1.5')
+          ring.setAttribute('opacity','0.55'); ring.classList.add('demo-dyn'); svg.appendChild(ring)
         }
         const dot = document.createElementNS(NS, 'circle')
         dot.setAttribute('cx', cx); dot.setAttribute('cy', cy)
-        dot.setAttribute('r', danger ? '4' : '3')
-        dot.setAttribute('fill', demoAFRcolor(afr))
-        dot.classList.add('demo-dot')
-        svg.appendChild(dot)
+        dot.setAttribute('r', danger ? '4.5' : '3'); dot.setAttribute('fill', afrColor(afr))
+        dot.classList.add('demo-dyn'); svg.appendChild(dot)
+      }
+    }
+
+    function renderBars(svg, data, maxVal, thresh) {
+      // thresh: [{val,color}] for horizontal limit lines
+      for (const t of thresh) {
+        const y = 85 - (t.val / maxVal) * 80
+        const l = document.createElementNS(NS, 'line')
+        l.setAttribute('x1','0'); l.setAttribute('y1', y)
+        l.setAttribute('x2','460'); l.setAttribute('y2', y)
+        l.setAttribute('stroke', t.color); l.setAttribute('stroke-width','1')
+        l.setAttribute('stroke-dasharray','4 3'); l.setAttribute('opacity','0.6')
+        l.classList.add('demo-dyn'); svg.appendChild(l)
+      }
+      for (const [rpm, val] of data) {
+        const barH = Math.max(2, (val / maxVal) * 80)
+        const by = 85 - barH, cx = rpmToX(rpm)
+        const color = thresh.length >= 2
+          ? (val >= thresh[1].val ? '#ff0055' : val >= thresh[0].val ? '#ff6a00' : '#00e5b4')
+          : '#00e5b4'
+        const rect = document.createElementNS(NS, 'rect')
+        rect.setAttribute('x', cx - 17); rect.setAttribute('y', by)
+        rect.setAttribute('width', 34); rect.setAttribute('height', barH)
+        rect.setAttribute('fill', color); rect.setAttribute('rx','2')
+        rect.setAttribute('opacity','0.88')
+        rect.classList.add('demo-dyn'); svg.appendChild(rect)
+      }
+    }
+
+    function demoRenderChart(s) {
+      const svg = document.getElementById('demo-chart')
+      svg.querySelectorAll('.demo-dyn').forEach(el => el.remove())
+      const showBand = s.chartType === 'afr'
+      ;['demo-target-rect','demo-target-top','demo-target-bot'].forEach(id => {
+        document.getElementById(id).style.display = showBand ? '' : 'none'
+      })
+      document.getElementById('demo-chart-label-el').textContent = s.chartLabel
+
+      if (s.chartType === 'afr') {
+        document.getElementById('demo-yl-top').textContent = '10.0'
+        document.getElementById('demo-yl-m1').textContent  = '11.0'
+        document.getElementById('demo-yl-m2').textContent  = '12.5'
+        document.getElementById('demo-yl-bot').textContent = '14.5'
+        document.getElementById('demo-chart-legend').innerHTML =
+          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#00e5b4;">&#9679; AFR Reading</span>' +
+          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:rgba(0,229,180,0.45);">- - Target Band (11.0&#x2013;12.5)</span>'
+        renderAFR(svg, s.chartData)
+      } else if (s.chartType === 'knocksum') {
+        document.getElementById('demo-yl-top').textContent = '10'
+        document.getElementById('demo-yl-m1').textContent  = '6'
+        document.getElementById('demo-yl-m2').textContent  = '2'
+        document.getElementById('demo-yl-bot').textContent = '0'
+        document.getElementById('demo-chart-legend').innerHTML =
+          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#00e5b4;">&#9632; Safe (0&#x2013;2)</span>' +
+          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#ff6a00;">&#9632; Monitor (3&#x2013;5)</span>' +
+          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#ff0055;">&#9632; Danger (6+)</span>'
+        renderBars(svg, s.chartData, 10, [{val:2,color:'#00e5b4'},{val:6,color:'#ff0055'}])
+      } else if (s.chartType === 'idc') {
+        document.getElementById('demo-yl-top').textContent = '100%'
+        document.getElementById('demo-yl-m1').textContent  = '90%'
+        document.getElementById('demo-yl-m2').textContent  = '80%'
+        document.getElementById('demo-yl-bot').textContent = '0%'
+        document.getElementById('demo-chart-legend').innerHTML =
+          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#00e5b4;">&#9632; Safe (&lt;80%)</span>' +
+          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#ff6a00;">&#9632; Warning (80&#x2013;90%)</span>' +
+          '<span style="font-size:11px;font-family:Rajdhani,sans-serif;color:#ff0055;">&#9632; Danger (&gt;90%)</span>'
+        renderBars(svg, s.chartData, 100, [{val:80,color:'#ff6a00'},{val:90,color:'#ff0055'}])
       }
     }
 
     function setScenario(name) {
       const s = DEMO_SCENARIOS[name]
-      // tabs
       document.querySelectorAll('.demo-tab').forEach(b => {
         b.classList.toggle('active', b.dataset.scenario === name)
       })
-      // stats
-      const keys = ['knock','afr','idc','boost']
-      keys.forEach(k => {
+      ;['knock','afr','idc','boost'].forEach(k => {
         const stat = s.stats[k]
-        const valEl = document.getElementById('dsval-' + k)
-        const boxEl = document.getElementById('dsbox-' + k)
-        valEl.textContent = stat.val
-        valEl.className = 'demo-stat-val ' + stat.cls
-        boxEl.className  = 'demo-stat-box ' + stat.cls
+        document.getElementById('dsval-' + k).textContent = stat.val
+        document.getElementById('dsval-' + k).className   = 'demo-stat-val ' + stat.cls
+        document.getElementById('dsbox-' + k).className   = 'demo-stat-box ' + stat.cls
       })
-      // chart
-      demoRenderChart(s.afrData)
-      // alerts
+      demoRenderChart(s)
       const alertsEl = document.getElementById('demo-alerts')
       alertsEl.innerHTML = ''
       s.alerts.forEach(a => {
@@ -2061,7 +2120,7 @@
       })
     }
 
-    // Init demo with clean scenario
+    // Init demo
     setScenario('clean')
 
     document.querySelectorAll('.feature-card, .how-step, .pricing-card, .vehicle-chip, .dyno-mock').forEach(el => {
