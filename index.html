@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Boost LogiX — Evo X Tune Analyser</title>
-  <meta name="description" content="Professional tune log analysis for Mitsubishi Evo X and Ralliart. Virtual Dyno, AFR analysis, knock detection, and full PDF reports." />
+  <title>Boost LogiX — AI-Powered Evo X Tune Analysis</title>
+  <meta name="description" content="Upload your EvoScan log. Get instant AI-powered tune analysis for Mitsubishi Evo X and Lancer Ralliart. AFR, knock, boost, timing, injector safety — diagnosed in seconds." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
@@ -1300,6 +1300,59 @@
     }
     .power-line  { stroke-dasharray: 600; stroke-dashoffset: 600; animation: draw-power  2s 0.5s ease forwards; }
     .torque-line { stroke-dasharray: 500; stroke-dashoffset: 500; animation: draw-torque 2s 0.8s ease forwards; }
+
+    /* ══ TUNE AI SHOWCASE ══ */
+    #ai-showcase { background: var(--bg2); position: relative; overflow: hidden; }
+    #ai-showcase::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,229,255,0.4), transparent); }
+    #ai-showcase::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,229,255,0.2), transparent); }
+    .ai-showcase-glow { position: absolute; top: 50%; left: 30%; transform: translate(-50%,-50%); width: 600px; height: 400px; background: radial-gradient(ellipse, rgba(0,229,255,0.05) 0%, transparent 70%); pointer-events: none; }
+    .ai-showcase-inner { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; max-width: 1100px; margin: 0 auto; }
+    .ai-showcase-copy .section-eyebrow { color: var(--cyan); }
+    .ai-showcase-copy .section-title span { background: linear-gradient(135deg, #00e5ff, #00b4cc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .ai-showcase-bullets { margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
+    .ai-bullet-row { display: flex; align-items: flex-start; gap: 14px; font-size: 15px; font-weight: 500; color: var(--dim); line-height: 1.5; font-style: italic; }
+    .ai-bullet-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px rgba(0,229,255,0.8); flex-shrink: 0; margin-top: 8px; }
+    .ai-terminal { background: #020208; border: 1px solid rgba(0,229,255,0.2); border-radius: 10px; overflow: hidden; box-shadow: 0 0 60px rgba(0,229,255,0.08), inset 0 0 30px rgba(0,0,0,0.5); position: relative; }
+    .ai-terminal::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #00e5ff, #00b4cc, #0088aa); }
+    .ai-terminal-header { display: flex; align-items: center; gap: 8px; padding: 13px 18px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,229,255,0.03); }
+    .ai-term-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .ai-term-dot-r { background: #ff5f57; }
+    .ai-term-dot-y { background: #ffbd2e; }
+    .ai-term-dot-g { background: #28c941; }
+    .ai-terminal-title { font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 2px; color: var(--dim); margin-left: 6px; }
+    .ai-terminal-body { padding: 18px 20px; }
+    .ai-user-prompt { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; padding: 11px 14px; background: rgba(255,255,255,0.03); border-radius: 6px; border: 1px solid rgba(255,255,255,0.06); }
+    .ai-user-avatar { font-size: 15px; flex-shrink: 0; }
+    .ai-user-text { font-size: 14px; color: var(--text); font-weight: 500; line-height: 1.4; }
+    .ai-response-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .ai-badge { font-family: 'Orbitron', sans-serif; font-size: 8px; font-weight: 700; letter-spacing: 2px; color: var(--cyan); background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.25); padding: 3px 10px; border-radius: 3px; }
+    .ai-processing { font-size: 11px; color: var(--dim); font-family: 'Orbitron', sans-serif; letter-spacing: 1px; }
+    .ai-finding { display: flex; align-items: flex-start; gap: 12px; padding: 10px 12px; border-radius: 5px; margin-bottom: 8px; border-left: 3px solid; }
+    .ai-finding-danger { border-left-color: var(--accent); background: rgba(255,0,85,0.06); }
+    .ai-finding-warning { border-left-color: var(--orange); background: rgba(255,106,0,0.06); }
+    .ai-finding-safe { border-left-color: var(--safe); background: rgba(0,229,180,0.06); }
+    .ai-finding-icon { font-size: 13px; flex-shrink: 0; margin-top: 2px; }
+    .ai-finding-title { font-family: 'Orbitron', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 1px; margin-bottom: 4px; }
+    .ai-finding-danger .ai-finding-title { color: var(--accent); }
+    .ai-finding-warning .ai-finding-title { color: var(--orange); }
+    .ai-finding-safe .ai-finding-title { color: var(--safe); }
+    .ai-finding-text { font-size: 12px; color: #8888bb; line-height: 1.55; }
+    .ai-recommendation { margin-top: 10px; padding: 10px 12px; background: rgba(0,229,255,0.04); border: 1px solid rgba(0,229,255,0.12); border-radius: 5px; font-size: 12px; color: #8888bb; line-height: 1.6; }
+    .ai-recommendation strong { color: var(--cyan); font-weight: 600; }
+    @media (max-width: 900px) { .ai-showcase-inner { grid-template-columns: 1fr; gap: 48px; } }
+
+    /* ══ TRUST SECTION ══ */
+    #trust { background: var(--bg); position: relative; }
+    #trust::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,0,85,0.3), transparent); }
+    .trust-header { text-align: center; margin-bottom: 56px; }
+    .trust-header .section-sub { margin: 0 auto; }
+    .trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 900px; margin: 0 auto; }
+    .trust-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 32px 24px; text-align: center; transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; }
+    .trust-card:hover { border-color: rgba(255,0,85,0.25); box-shadow: 0 8px 32px rgba(0,0,0,0.3); transform: translateY(-3px); }
+    .trust-icon { font-size: 32px; margin-bottom: 16px; display: block; }
+    .trust-title { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--text); margin-bottom: 12px; }
+    .trust-desc { font-size: 13px; color: var(--dim); line-height: 1.8; }
+    @media (max-width: 900px) { .trust-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; } }
   </style>
 </head>
 <body>
@@ -1311,10 +1364,10 @@
   <nav>
     <a href="#hero" class="nav-logo">Boost LogiX</a>
     <ul class="nav-links">
+      <li><a href="#ai-showcase">Tune AI</a></li>
       <li><a href="#features">Features</a></li>
       <li><a href="#dyno">Virtual Dyno</a></li>
       <li><a href="#demo">Live Demo</a></li>
-      <li><a href="#how">How It Works</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="https://pub-63be5df14f0e4cb3bcf4630949633ae3.r2.dev/v1.0.1-beta.2/Boost-LogiX-Setup-1.0.1-beta.2.exe" class="nav-cta">Download</a></li>
     </ul>
@@ -1329,17 +1382,17 @@
     <div class="hero-top-glow"></div>
 
     <div class="hero-content">
-      <div class="hero-eyebrow fade-up">Evo X &amp; Ralliart Tune Analysis</div>
+      <div class="hero-eyebrow fade-up">AI-Powered EvoScan Log Analysis</div>
       <h1 class="hero-title fade-up delay-1">
-        <span class="line1">KNOW YOUR</span>
-        <span class="line2">TUNE.</span>
+        <span class="line1">YOUR LOG.</span>
+        <span class="line2">AI DECODED.</span>
       </h1>
       <p class="hero-sub fade-up delay-2">
-        Professional log analysis for <strong>Mitsubishi Evo X and Ralliart</strong>. AFR, knock, boost, timing, fuel trims — and a <strong>Virtual Dyno</strong> built from your own WOT pull.
+        Drop your EvoScan CSV into Boost LogiX — <strong>AI interprets your AFR, knock, boost, ignition timing, fuel trims, and injector safety</strong> in seconds. Expert Evo tuning knowledge. Instant answers.
       </p>
       <div class="hero-buttons fade-up delay-3">
-        <a href="#cta" class="btn-primary">Download Free</a>
-        <a href="#features" class="btn-secondary">See Features</a>
+        <a href="#ai-showcase" class="btn-primary">See AI in Action</a>
+        <a href="#cta" class="btn-secondary">Download Free</a>
       </div>
     </div>
 
@@ -1351,23 +1404,109 @@
 
   <!-- ══ STATS BAR ══ -->
   <div class="stats-bar">
-    <div class="stat-item">
-      <div class="stat-val">3</div>
-      <div class="stat-label">Log Types Supported</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-val">RPM</div>
-      <div class="stat-label">Inertia-Based Dyno</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-val">22</div>
-      <div class="stat-label">Tyre Presets</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-val">SAE</div>
-      <div class="stat-label">J1349 Corrected</div>
-    </div>
+    <div class="stat-item"><div class="stat-val">AI</div><div class="stat-label">Instant Log Diagnosis</div></div>
+    <div class="stat-item"><div class="stat-val">7+</div><div class="stat-label">Parameters Analysed</div></div>
+    <div class="stat-item"><div class="stat-val">3</div><div class="stat-label">Log Types Supported</div></div>
+    <div class="stat-item"><div class="stat-val">SAE</div><div class="stat-label">J1349 Dyno Corrected</div></div>
   </div>
+
+  <!-- ══ HOW IT WORKS ══ -->
+  <section id="how">
+    <div class="how-header">
+      <p class="section-eyebrow">Getting Started</p>
+      <h2 class="section-title">Three Steps to Full Insight</h2>
+      <p class="section-sub">From EvoScan export to AI-powered tune analysis in under a minute.</p>
+    </div>
+
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="step-num">01</div>
+        <div class="step-title">Log Your Run</div>
+        <p class="step-desc">Use EvoScan to record a WOT pull, idle session, or cruise run. Export the log as a CSV — that's all you need.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">02</div>
+        <div class="step-title">Upload Your CSV</div>
+        <p class="step-desc">Drop the CSV into Boost LogiX. The app auto-detects WOT, Idle, or Cruise and parses every parameter instantly — no setup required.</p>
+      </div>
+      <div class="how-step">
+        <div class="step-num">03</div>
+        <div class="step-title">Get AI Analysis</div>
+        <p class="step-desc">Boost LogiX AI interprets your data — AFR, knock, boost, timing, fuel trims, and IDC — and flags anything dangerous. Ask Tune AI for deeper tuning insight.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TUNE AI SHOWCASE ══ -->
+  <section id="ai-showcase">
+    <div class="ai-showcase-glow"></div>
+    <div class="ai-showcase-inner">
+      <div class="ai-showcase-copy">
+        <p class="section-eyebrow">Tune AI — Powered by Claude</p>
+        <h2 class="section-title">Ask Anything.<br>Get <span>Expert Answers.</span></h2>
+        <p class="section-sub" style="max-width:100%">
+          Load your log and chat with Tune AI — an AI assistant built on deep Evo X tuning knowledge. Ask about knock events, lean spikes, fuel trims, or injector limits and get clear, actionable advice in plain English.
+        </p>
+        <div class="ai-showcase-bullets">
+          <div class="ai-bullet-row"><div class="ai-bullet-dot"></div>"Why is my AFR going lean above 5,000 RPM?"</div>
+          <div class="ai-bullet-row"><div class="ai-bullet-dot"></div>"Is this knock count dangerous for my engine?"</div>
+          <div class="ai-bullet-row"><div class="ai-bullet-dot"></div>"What should I tell my tuner about this log?"</div>
+          <div class="ai-bullet-row"><div class="ai-bullet-dot"></div>"Can I safely add more boost with these numbers?"</div>
+        </div>
+      </div>
+      <div class="ai-terminal">
+        <div class="ai-terminal-header">
+          <div class="ai-term-dot ai-term-dot-r"></div>
+          <div class="ai-term-dot ai-term-dot-y"></div>
+          <div class="ai-term-dot ai-term-dot-g"></div>
+          <span class="ai-terminal-title">Tune AI — WOT Log Analysis</span>
+        </div>
+        <div class="ai-terminal-body">
+          <div class="ai-user-prompt">
+            <span class="ai-user-avatar">👤</span>
+            <span class="ai-user-text">Analyse this log and tell me if anything is dangerous.</span>
+          </div>
+          <div class="ai-response">
+            <div class="ai-response-meta">
+              <span class="ai-badge">TUNE AI</span>
+              <span class="ai-processing">Analysing · RON98 · Evo X GSR · WOT</span>
+            </div>
+            <div class="ai-finding ai-finding-danger">
+              <span class="ai-finding-icon">🔴</span>
+              <div>
+                <div class="ai-finding-title">LEAN AFR — ACTION REQUIRED</div>
+                <div class="ai-finding-text">AFR hit 14.1:1 at 5,500 RPM — outside safe 11.0–12.5 for RON98. Do not make another WOT pull until resolved.</div>
+              </div>
+            </div>
+            <div class="ai-finding ai-finding-warning">
+              <span class="ai-finding-icon">🟠</span>
+              <div>
+                <div class="ai-finding-title">ELEVATED KNOCK — MONITOR</div>
+                <div class="ai-finding-text">KnockSum peaked at 4 at 4,500 RPM. ECU applied 1.4° timing retard. Likely triggered by the lean condition above.</div>
+              </div>
+            </div>
+            <div class="ai-finding ai-finding-warning">
+              <span class="ai-finding-icon">🟠</span>
+              <div>
+                <div class="ai-finding-title">INJECTOR LIMIT APPROACHING</div>
+                <div class="ai-finding-text">IDC peaked at 82.4% — warning threshold is 80%. Consistent with injectors struggling to supply enough fuel at peak load.</div>
+              </div>
+            </div>
+            <div class="ai-finding ai-finding-safe">
+              <span class="ai-finding-icon">🟢</span>
+              <div>
+                <div class="ai-finding-title">BOOST ON TARGET</div>
+                <div class="ai-finding-text">Peak 1.65 bar — within normal range. Wastegate control looks stable across the pull.</div>
+              </div>
+            </div>
+            <div class="ai-recommendation">
+              <strong>Recommendation:</strong> Fix fuelling before the next pull. Check for boost leaks post-intercooler, verify MAF calibration, and assess whether injector capacity is the limiting factor at high RPM.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- ══ FEATURES ══ -->
   <section id="features">
@@ -1408,8 +1547,8 @@
       <!-- PRO DIVIDER -->
       <div class="pro-divider fade-up">
         <div class="pro-divider-text">
-          <h3>UNLOCK PRO — THE FULL ARSENAL</h3>
-          <p>Every analysis tab. Every chart. Every export. <strong>10× more than free.</strong></p>
+          <h3>UNLOCK PRO — AI + THE FULL ARSENAL</h3>
+          <p>Tune AI chat, every analysis tab, every chart, every export. <strong>10× more than free.</strong></p>
         </div>
         <div class="pro-divider-price">
           <div class="price-amt">$79<span style="font-size:16px;color:var(--dim);font-weight:400"> AUD</span></div>
@@ -1423,6 +1562,15 @@
         <div class="tier-line"></div>
       </div>
       <div class="features-grid-pro">
+
+        <div class="feature-card card-pro card-cyan" style="grid-column: 1 / -1; display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: start;">
+          <span class="feature-icon" style="font-size:36px; margin-bottom:0;">🤖</span>
+          <div>
+            <div class="feature-title">Tune AI — Ask Your Log Anything</div>
+            <p class="feature-desc">Chat with an AI assistant that has read your log and understands Evo X tuning. Ask why your AFR is lean, whether your knock count is safe, or what to tell your tuner — and get expert answers backed by your actual data. 50 queries/month included with Pro.</p>
+            <span class="feature-tag tag-pro">Pro</span>
+          </div>
+        </div>
 
         <div class="feature-card card-pro">
           <span class="feature-icon">📊</span>
@@ -1712,29 +1860,28 @@
     </div>
   </section>
 
-  <!-- ══ HOW IT WORKS ══ -->
-  <section id="how">
-    <div class="how-header">
-      <p class="section-eyebrow">Getting Started</p>
-      <h2 class="section-title">Three Steps to Full Insight</h2>
-      <p class="section-sub">From EvoScan export to full tune analysis in under a minute.</p>
+  <!-- ══ TRUST / CREDIBILITY ══ -->
+  <section id="trust">
+    <div class="trust-header">
+      <p class="section-eyebrow">Why Trust It</p>
+      <h2 class="section-title">Built on Proven <span class="text-accent">Evo Tuning Knowledge</span></h2>
+      <p class="section-sub">Not guesswork. Every threshold, every alert, and every AI response is grounded in established 4B11T tuning methodology — the same targets experienced Evo tuners use.</p>
     </div>
-
-    <div class="how-steps">
-      <div class="how-step">
-        <div class="step-num">01</div>
-        <div class="step-title">Log Your Run</div>
-        <p class="step-desc">Use EvoScan to log your WOT pull, idle session, or cruise run. Boost LogiX supports all three log types and auto-detects which one you've loaded.</p>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <span class="trust-icon">🎯</span>
+        <div class="trust-title">Calibrated Thresholds</div>
+        <p class="trust-desc">KnockSum, AFR, IDC, and boost targets are not generic values. They match what experienced Evo X tuners look for — safe zones, monitor bands, and danger limits specific to the 4B11T engine.</p>
       </div>
-      <div class="how-step">
-        <div class="step-num">02</div>
-        <div class="step-title">Drop the CSV</div>
-        <p class="step-desc">Drag and drop your EvoScan CSV export directly into Boost LogiX. The app parses, validates, and charts everything instantly — no setup required.</p>
+      <div class="trust-card">
+        <span class="trust-icon">⛽</span>
+        <div class="trust-title">Fuel-Type Aware</div>
+        <p class="trust-desc">RON98 and E85 have different AFR targets. Boost LogiX knows the difference and adjusts every alert and AI recommendation to match your actual fuel type — not a one-size-fits-all approximation.</p>
       </div>
-      <div class="how-step">
-        <div class="step-num">03</div>
-        <div class="step-title">Read the Data</div>
-        <p class="step-desc">Review AFR, knock, boost, timing, fuel trims, and injector duty — colour-coded alerts flag anything that needs attention. Export a full PDF report.</p>
+      <div class="trust-card">
+        <span class="trust-icon">🔬</span>
+        <div class="trust-title">Log-Type Specific Analysis</div>
+        <p class="trust-desc">WOT, Idle, and Cruise require completely different evaluation logic. The analysis engine — and Tune AI — adapts automatically to the log you have loaded, applying the right context every time.</p>
       </div>
     </div>
   </section>
@@ -1744,7 +1891,7 @@
     <div class="vehicles-header">
       <p class="section-eyebrow">Compatible Vehicles</p>
       <h2 class="section-title">Built for the 4B11T</h2>
-      <p class="section-sub">Purpose-built for Mitsubishi's turbocharged 4B11T platform.</p>
+      <p class="section-sub">Purpose-built for Mitsubishi's turbocharged 4B11T platform. Supports EvoScan CSV exports from all Evo X and Ralliart variants.</p>
     </div>
     <div class="vehicles-grid">
       <div class="vehicle-chip">Evo X GSR (Manual)</div>
@@ -1790,6 +1937,7 @@
         <div class="pricing-divider"></div>
         <ul class="pricing-features">
           <li><span class="pricing-check">✓</span> Everything in Free</li>
+          <li><span class="pricing-check">✓</span> <strong>Tune AI</strong> — 50 AI queries/month</li>
           <li><span class="pricing-check">✓</span> All detailed chart tabs</li>
           <li><span class="pricing-check">✓</span> <strong>Virtual Dyno</strong> — wheel power &amp; torque</li>
           <li><span class="pricing-check">✓</span> Full PDF analysis report</li>
@@ -1807,7 +1955,7 @@
   <section id="cta">
     <div class="cta-glow"></div>
     <h2 class="cta-title">Your tune has a story. <span style="background:linear-gradient(135deg,#ff0055,#ff6a00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Read it.</span></h2>
-    <p class="cta-sub">Download Boost LogiX free. No credit card. No time limit.</p>
+    <p class="cta-sub">Download Boost LogiX free. Analyse unlimited logs. No credit card. No time limit.</p>
     <div class="cta-buttons">
       <a href="https://pub-63be5df14f0e4cb3bcf4630949633ae3.r2.dev/v1.0.1-beta.2/Boost-LogiX-Setup-1.0.1-beta.2.exe" class="btn-primary">⬇ Download for Windows</a>
     </div>
