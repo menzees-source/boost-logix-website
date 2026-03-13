@@ -1354,6 +1354,19 @@
     .trust-desc { font-size: 13px; color: var(--dim); line-height: 1.8; }
     @media (max-width: 900px) { .trust-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; } }
 
+    /* ══ SUPPORT SECTION ══ */
+    #support { background: var(--bg2); position: relative; text-align: center; }
+    #support::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,229,255,0.3), transparent); }
+    .support-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 860px; margin: 48px auto 0; }
+    .support-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 32px 24px; transition: border-color 0.3s, transform 0.3s; }
+    .support-card:hover { border-color: rgba(0,229,255,0.25); transform: translateY(-3px); }
+    .support-card-icon { font-size: 28px; margin-bottom: 14px; display: block; }
+    .support-card-title { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--text); margin-bottom: 10px; }
+    .support-card-desc { font-size: 13px; color: var(--dim); line-height: 1.75; margin-bottom: 16px; }
+    .support-card-link { display: inline-block; font-family: 'Orbitron', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; color: var(--cyan); text-decoration: none; border-bottom: 1px solid rgba(0,229,255,0.3); padding-bottom: 2px; transition: color 0.2s, border-color 0.2s; }
+    .support-card-link:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
+    @media (max-width: 900px) { .support-grid { grid-template-columns: 1fr; max-width: 420px; } }
+
     /* ══ SCREENSHOTS SECTION ══ */
     #screenshots { background: var(--bg); position: relative; }
     #screenshots::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,229,255,0.3), transparent); }
@@ -2045,12 +2058,39 @@
     <p class="platform-note">Windows 10 / 11 &bull; Requires EvoScan</p>
   </section>
 
+  <!-- ══ SUPPORT ══ -->
+  <section id="support">
+    <p class="section-eyebrow">Get Help</p>
+    <h2 class="section-title">Support</h2>
+    <p class="section-sub" style="margin:0 auto">Have a question about your log, your license, or the app? We're here to help.</p>
+    <div class="support-grid">
+      <div class="support-card">
+        <span class="support-card-icon">✉️</span>
+        <div class="support-card-title">Email Support</div>
+        <p class="support-card-desc">Get help with anything — log analysis questions, account issues, or Pro license queries.</p>
+        <a href="mailto:support@boostlogix.app" class="support-card-link">support@boostlogix.app</a>
+      </div>
+      <div class="support-card">
+        <span class="support-card-icon">📄</span>
+        <div class="support-card-title">Privacy Policy</div>
+        <p class="support-card-desc">Read how we handle your data, what we store, and your rights as a user.</p>
+        <a href="/privacy" class="support-card-link">View Privacy Policy</a>
+      </div>
+      <div class="support-card">
+        <span class="support-card-icon">⬇️</span>
+        <div class="support-card-title">Download</div>
+        <p class="support-card-desc">Download the latest version of Boost LogiX for Windows. Free to get started.</p>
+        <a href="https://pub-63be5df14f0e4cb3bcf4630949633ae3.r2.dev/v1.0.1-beta.3/Boost-LogiX-Setup-1.0.1-beta.3.exe" class="support-card-link">Download for Windows</a>
+      </div>
+    </div>
+  </section>
+
   <!-- ══ FOOTER ══ -->
   <footer>
     <span class="footer-logo">Boost LogiX</span>
     <ul class="footer-links">
       <li><a href="/privacy">Privacy</a></li>
-      <li><a href="#">Support</a></li>
+      <li><a href="#support">Support</a></li>
       <li><a href="#">License</a></li>
     </ul>
     <span class="footer-copy">© 2026 Boost LogiX. All rights reserved.</span>
