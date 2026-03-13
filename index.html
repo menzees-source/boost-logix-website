@@ -1353,6 +1353,31 @@
     .trust-title { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--text); margin-bottom: 12px; }
     .trust-desc { font-size: 13px; color: var(--dim); line-height: 1.8; }
     @media (max-width: 900px) { .trust-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; } }
+
+    /* ══ SCREENSHOTS SECTION ══ */
+    #screenshots { background: var(--bg); position: relative; }
+    #screenshots::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,229,255,0.3), transparent); }
+    .screenshots-inner { max-width: 960px; margin: 0 auto; }
+    .screenshots-header { text-align: center; margin-bottom: 48px; }
+    .screenshots-header .section-sub { margin: 0 auto; }
+    .screenshot-featured { margin-bottom: 20px; position: relative; cursor: pointer; }
+    .screenshot-featured img { width: 100%; border-radius: 10px; border: 1px solid rgba(0,229,255,0.25); box-shadow: 0 0 60px rgba(0,229,255,0.12), 0 20px 60px rgba(0,0,0,0.6); display: block; transition: box-shadow 0.3s, transform 0.3s; }
+    .screenshot-featured:hover img { box-shadow: 0 0 80px rgba(0,229,255,0.2), 0 24px 80px rgba(0,0,0,0.7); transform: translateY(-2px); }
+    .screenshots-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .screenshot-card { cursor: pointer; }
+    .screenshot-card img { width: 100%; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 8px 32px rgba(0,0,0,0.5); display: block; transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; }
+    .screenshot-card:hover img { border-color: rgba(255,0,85,0.35); box-shadow: 0 12px 48px rgba(0,0,0,0.6), 0 0 30px rgba(255,0,85,0.1); transform: translateY(-3px); }
+    .screenshot-caption { display: flex; align-items: baseline; gap: 10px; margin-top: 12px; padding: 0 2px; }
+    .screenshot-label { font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: var(--text); white-space: nowrap; flex-shrink: 0; }
+    .screenshot-featured .screenshot-label { font-size: 11px; color: var(--cyan); }
+    .screenshot-desc { font-size: 13px; color: var(--dim); line-height: 1.5; }
+    /* Lightbox */
+    .lightbox { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; padding: 24px; cursor: zoom-out; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 100%; max-height: 90vh; border-radius: 8px; box-shadow: 0 0 80px rgba(0,0,0,0.8); object-fit: contain; }
+    .lightbox-close { position: absolute; top: 20px; right: 24px; font-size: 28px; color: var(--dim); cursor: pointer; line-height: 1; transition: color 0.2s; }
+    .lightbox-close:hover { color: var(--text); }
+    @media (max-width: 700px) { .screenshots-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -1886,6 +1911,64 @@
     </div>
   </section>
 
+  <!-- ══ SCREENSHOTS ══ -->
+  <section id="screenshots">
+    <div class="screenshots-inner">
+      <div class="screenshots-header">
+        <p class="section-eyebrow">Real App. Real Results.</p>
+        <h2 class="section-title">Not Mockups — <span class="text-cyan">Actual Screenshots</span></h2>
+        <p class="section-sub">Every screen below is from a live Boost LogiX session, analysing real EvoScan datalogs.</p>
+      </div>
+
+      <!-- Featured: Tune AI — most compelling screenshot -->
+      <div class="screenshot-featured" onclick="openLightbox('screenshots/tune-ai.jpg')">
+        <img src="screenshots/tune-ai.jpg" alt="Tune AI analysing a WOT log — lean AFR detected, 4 actionable next steps" loading="lazy" />
+        <div class="screenshot-caption">
+          <span class="screenshot-label">🤖 Tune AI in Action</span>
+          <span class="screenshot-desc">Real AI response — identifies dangerously lean AFR at WOT, explains the risk, and gives 4 specific next steps to fix it</span>
+        </div>
+      </div>
+
+      <!-- Grid: remaining 4 screenshots -->
+      <div class="screenshots-grid">
+        <div class="screenshot-card" onclick="openLightbox('screenshots/overview.jpg')">
+          <img src="screenshots/overview.jpg" alt="Overview dashboard — alerts, stats, AFR and fuel trim charts" loading="lazy" />
+          <div class="screenshot-caption">
+            <span class="screenshot-label">📋 Overview Dashboard</span>
+            <span class="screenshot-desc">Alerts, key stats, and two charts loaded from a single CSV drop</span>
+          </div>
+        </div>
+        <div class="screenshot-card" onclick="openLightbox('screenshots/afr.jpg')">
+          <img src="screenshots/afr.jpg" alt="AFR deep analysis chart with colour-coded target bands" loading="lazy" />
+          <div class="screenshot-caption">
+            <span class="screenshot-label">📊 AFR Analysis</span>
+            <span class="screenshot-desc">Colour-coded chart — green in target, amber lean warning, red danger — with E85 and RON98 bands</span>
+          </div>
+        </div>
+        <div class="screenshot-card" onclick="openLightbox('screenshots/dyno.jpg')">
+          <img src="screenshots/dyno.jpg" alt="Virtual Dyno — 264 kW peak, 471.7 Nm torque curve" loading="lazy" />
+          <div class="screenshot-caption">
+            <span class="screenshot-label">⚡ Virtual Dyno</span>
+            <span class="screenshot-desc">264 kW · 471.7 Nm — SAE J1349 corrected power and torque curves from a real WOT pull</span>
+          </div>
+        </div>
+        <div class="screenshot-card" onclick="openLightbox('screenshots/pdf.jpg')">
+          <img src="screenshots/pdf.jpg" alt="PDF analysis report — coolant temperature and knock at idle" loading="lazy" />
+          <div class="screenshot-caption">
+            <span class="screenshot-label">📄 PDF Report</span>
+            <span class="screenshot-desc">Professional tune analysis report — exportable and ready to share with your tuner</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
   <!-- ══ COMPATIBLE VEHICLES ══ -->
   <section id="vehicles">
     <div class="vehicles-header">
@@ -2290,6 +2373,18 @@
       el.style.transform = 'translateY(24px)'
       observer.observe(el)
     })
+
+    // ── Lightbox ──────────────────────────────────────────────
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src
+      document.getElementById('lightbox').classList.add('open')
+      document.body.style.overflow = 'hidden'
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open')
+      document.body.style.overflow = ''
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox() })
   </script>
 </body>
 </html>
