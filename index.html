@@ -99,10 +99,9 @@
     .csb-sub strong { color: var(--cyan); }
     .csb-form {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
       gap: 10px;
-      flex-wrap: wrap;
       max-width: 520px;
       margin: 0 auto 14px;
     }
@@ -124,22 +123,36 @@
       border-color: var(--accent);
       box-shadow: 0 0 16px rgba(255,0,85,0.25);
     }
+    .csb-btns {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
     .csb-btn {
-      padding: 13px 28px;
-      background: linear-gradient(90deg, #ff0055, #ff6a00);
+      padding: 13px 24px;
       border: none;
       border-radius: 6px;
       color: #fff;
       font-family: 'Orbitron', sans-serif;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 2px;
       cursor: pointer;
       white-space: nowrap;
       transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .csb-btn-notify {
+      background: linear-gradient(90deg, #ff0055, #ff6a00);
       box-shadow: 0 0 20px rgba(255,0,85,0.35);
     }
-    .csb-btn:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 4px 24px rgba(255,0,85,0.5); }
+    .csb-btn-notify:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 4px 24px rgba(255,0,85,0.5); }
+    .csb-btn-beta {
+      background: linear-gradient(90deg, #00b4cc, #00e5ff);
+      box-shadow: 0 0 20px rgba(0,229,255,0.3);
+      color: #04040d;
+    }
+    .csb-btn-beta:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 4px 24px rgba(0,229,255,0.5); }
     .csb-btn:active { transform: translateY(0); }
     .csb-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     .csb-msg {
@@ -152,16 +165,17 @@
     .csb-msg.error   { color: var(--accent); }
     .csb-dismiss {
       display: inline-block;
-      margin-top: 10px;
-      font-size: 11px;
-      color: #445;
+      margin-top: 12px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
       cursor: pointer;
       letter-spacing: 1px;
       text-transform: uppercase;
-      border-bottom: 1px solid transparent;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      padding-bottom: 1px;
       transition: color 0.2s, border-color 0.2s;
     }
-    .csb-dismiss:hover { color: #778; border-color: #778; }
+    .csb-dismiss:hover { color: rgba(255,255,255,0.65); border-color: rgba(255,255,255,0.4); }
 
     /* Push all page content down by banner height */
     body.has-banner nav { top: var(--banner-h, 0px); }
@@ -1639,9 +1653,12 @@
     <div class="csb-eyebrow">⚡ Launching Soon</div>
     <div class="csb-headline orbitron">Coming Soon</div>
     <div class="csb-sub">Be the first to know when Boost LogiX drops.<br><strong>Early access, launch discounts, and beta spots</strong> go to the list first.</div>
-    <form class="csb-form" id="csb-form" onsubmit="csbSubmit(event)">
+    <form class="csb-form" id="csb-form" onsubmit="return false">
       <input class="csb-input" type="email" id="csb-email" placeholder="your@email.com" required autocomplete="email" />
-      <button class="csb-btn" type="submit" id="csb-submit-btn">NOTIFY ME</button>
+      <div class="csb-btns">
+        <button class="csb-btn csb-btn-notify" type="button" onclick="csbSubmit('launch')" id="csb-btn-notify">NOTIFY ME AT LAUNCH</button>
+        <button class="csb-btn csb-btn-beta" type="button" onclick="csbSubmit('beta')" id="csb-btn-beta">🧪 JOIN THE BETA TEAM</button>
+      </div>
     </form>
     <div class="csb-msg" id="csb-msg"></div>
     <div class="csb-dismiss" onclick="csbDismiss()">I'll check back later ↓</div>
@@ -2802,15 +2819,19 @@
       sessionStorage.setItem('csb-dismissed', '1')
     }
 
-    async function csbSubmit(e) {
-      e.preventDefault()
-      const email = document.getElementById('csb-email').value.trim()
-      const btn   = document.getElementById('csb-submit-btn')
-      const msg   = document.getElementById('csb-msg')
+    async function csbSubmit(type) {
+      const emailEl = document.getElementById('csb-email')
+      const email   = emailEl.value.trim()
+      const msg     = document.getElementById('csb-msg')
 
-      if (!email) return
-      btn.disabled = true
-      btn.textContent = 'SENDING...'
+      if (!email || !emailEl.reportValidity()) return
+
+      const btnNotify = document.getElementById('csb-btn-notify')
+      const btnBeta   = document.getElementById('csb-btn-beta')
+      btnNotify.disabled = true
+      btnBeta.disabled   = true
+      const activeBtn = type === 'beta' ? btnBeta : btnNotify
+      activeBtn.textContent = 'SENDING...'
       msg.textContent = ''
       msg.className = 'csb-msg'
 
@@ -2822,11 +2843,13 @@
             'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9xeWNwdmV6aWZkYXF4ZnBsbGF2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxMzAzMjUsImV4cCI6MjA4ODcwNjMyNX0.wjj8LJ9ree9LfRCxDnhyTfNLnFW0WF1VkSyqzzAbOUo',
             'Prefer': 'return=minimal'
           },
-          body: JSON.stringify({ email })
+          body: JSON.stringify({ email, type })
         })
 
         if (res.status === 201) {
-          msg.textContent = "✓ You're on the list — we'll be in touch!"
+          msg.textContent = type === 'beta'
+            ? "🧪 Beta application received — we'll be in touch soon!"
+            : "✓ You're on the list — we'll notify you at launch!"
           msg.className = 'csb-msg success'
           document.getElementById('csb-form').style.display = 'none'
         } else if (res.status === 409) {
@@ -2839,8 +2862,10 @@
       } catch (err) {
         msg.textContent = 'Something went wrong — try again or email us directly.'
         msg.className = 'csb-msg error'
-        btn.disabled = false
-        btn.textContent = 'NOTIFY ME'
+        btnNotify.disabled = false
+        btnBeta.disabled   = false
+        btnNotify.textContent = 'NOTIFY ME AT LAUNCH'
+        btnBeta.textContent   = '🧪 JOIN THE BETA TEAM'
       }
     }
   </script>
