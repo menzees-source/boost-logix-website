@@ -163,6 +163,34 @@
     }
     .csb-msg.success { color: var(--safe); }
     .csb-msg.error   { color: var(--accent); }
+    .csb-beta-label {
+      font-size: 13px;
+      color: #00e5cc;
+      margin-bottom: 8px;
+      text-align: left;
+      letter-spacing: 0.3px;
+      line-height: 1.5;
+    }
+    .csb-textarea {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(0,229,255,0.04);
+      border: 1px solid rgba(0,229,255,0.3);
+      border-radius: 6px;
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      margin-bottom: 10px;
+    }
+    .csb-textarea::placeholder { color: #445; }
+    .csb-textarea:focus {
+      border-color: rgba(0,229,255,0.6);
+      box-shadow: 0 0 16px rgba(0,229,255,0.15);
+    }
     .csb-dismiss {
       display: inline-block;
       margin-top: 12px;
@@ -1655,9 +1683,17 @@
     <div class="csb-sub">Be the first to know when Boost LogiX drops.<br><strong>Early access, launch discounts, and beta spots</strong> go to the list first.</div>
     <form class="csb-form" id="csb-form" onsubmit="return false">
       <input class="csb-input" type="email" id="csb-email" placeholder="your@email.com" required autocomplete="email" />
-      <div class="csb-btns">
+      <div class="csb-btns" id="csb-btns">
         <button class="csb-btn csb-btn-notify" type="button" onclick="csbSubmit('launch')" id="csb-btn-notify">NOTIFY ME AT LAUNCH</button>
-        <button class="csb-btn csb-btn-beta" type="button" onclick="csbSubmit('beta')" id="csb-btn-beta">🧪 JOIN THE BETA TEAM</button>
+        <button class="csb-btn csb-btn-beta" type="button" onclick="csbExpandBeta()" id="csb-btn-beta">🧪 JOIN THE BETA TEAM</button>
+      </div>
+      <div id="csb-beta-section" style="display:none;width:100%;max-width:520px;">
+        <div class="csb-beta-label">Tell us about your tuning &amp; log reading background, and why you'd like to be part of the Boost LogiX beta team.</div>
+        <textarea class="csb-textarea" id="csb-notes" placeholder="e.g. I've been running EvoScan on my Ralliart for 2 years, I understand fuel trims and knock analysis, and I want to help improve the alerts and PDF reports..." rows="4"></textarea>
+        <div class="csb-btns">
+          <button class="csb-btn csb-btn-beta" type="button" onclick="csbSubmit('beta')" id="csb-btn-apply">SUBMIT APPLICATION</button>
+          <button class="csb-btn" style="background:#1a1a3a;color:#aaaacc;box-shadow:none;" type="button" onclick="csbCollapseBeta()">Cancel</button>
+        </div>
       </div>
     </form>
     <div class="csb-msg" id="csb-msg"></div>
@@ -2811,6 +2847,20 @@
       document.documentElement.style.setProperty('--banner-h', h + 'px')
     }
 
+    function csbExpandBeta() {
+      document.getElementById('csb-btns').style.display = 'none'
+      document.getElementById('csb-beta-section').style.display = 'block'
+      setTimeout(() => document.getElementById('csb-notes').focus(), 50)
+      setBannerHeightGlobal()
+    }
+
+    function csbCollapseBeta() {
+      document.getElementById('csb-beta-section').style.display = 'none'
+      document.getElementById('csb-btns').style.display = 'flex'
+      document.getElementById('csb-notes').value = ''
+      setBannerHeightGlobal()
+    }
+
     function csbDismiss() {
       const banner = document.getElementById('coming-soon-banner')
       banner.classList.add('dismissed')
@@ -2843,7 +2893,7 @@
             'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9xeWNwdmV6aWZkYXF4ZnBsbGF2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxMzAzMjUsImV4cCI6MjA4ODcwNjMyNX0.wjj8LJ9ree9LfRCxDnhyTfNLnFW0WF1VkSyqzzAbOUo',
             'Prefer': 'return=minimal'
           },
-          body: JSON.stringify({ email, type })
+          body: JSON.stringify({ email, type, notes: type === 'beta' ? (document.getElementById('csb-notes')?.value?.trim() || null) : null })
         })
 
         if (res.status === 201) {
