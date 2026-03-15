@@ -1660,7 +1660,7 @@
       <li><a href="#demo">Live Demo</a></li>
       <li><a href="#pricing">Pricing</a></li>
       <li><a href="#contact">Contact</a></li>
-      <li><a href="https://pub-63be5df14f0e4cb3bcf4630949633ae3.r2.dev/v1.0.2-beta.6/Boost-LogiX-Setup-1.0.2-beta.6.exe" class="nav-cta">Download</a></li>
+      <li><a href="#" class="nav-cta" onclick="csbRegisterRedirect(event)">Download</a></li>
     </ul>
   </nav>
 
@@ -1683,7 +1683,7 @@
       </p>
       <div class="hero-buttons fade-up delay-3">
         <a href="#ai-showcase" class="btn-primary">See AI in Action</a>
-        <a href="https://pub-63be5df14f0e4cb3bcf4630949633ae3.r2.dev/v1.0.2-beta.6/Boost-LogiX-Setup-1.0.2-beta.6.exe" class="btn-secondary">⬇ Download Free</a>
+        <a href="#" class="btn-secondary" onclick="csbRegisterRedirect(event)">⬇ Download Free</a>
       </div>
     </div>
 
@@ -2280,7 +2280,7 @@
           <li class="locked"><span class="pricing-x">✕</span> PDF &amp; TXT export</li>
           <li class="locked"><span class="pricing-x">✕</span> Tune AI</li>
         </ul>
-        <a href="https://pub-63be5df14f0e4cb3bcf4630949633ae3.r2.dev/v1.0.2-beta.6/Boost-LogiX-Setup-1.0.2-beta.6.exe" class="btn-pricing btn-pricing-free">⬇ Download Free</a>
+        <a href="#" class="btn-pricing btn-pricing-free" onclick="csbRegisterRedirect(event)">⬇ Download Free</a>
       </div>
 
       <!-- STEP 2 — PRO -->
@@ -2303,7 +2303,7 @@
           <li><span class="pricing-check">✓</span> All future updates included</li>
           <li><span class="pricing-check">✓</span> <strong>Tune AI</strong> — 20 lifetime queries included</li>
         </ul>
-        <a href="https://saschamenzel.lemonsqueezy.com/checkout/buy/fecb6d6f-90a4-4cb4-a33e-4ed5f25d96a6" target="_blank" class="btn-pricing btn-pricing-pro">Get Pro — $59 AUD</a>
+        <a href="#" class="btn-pricing btn-pricing-pro" onclick="csbRegisterRedirect(event)">Get Pro — $59 AUD</a>
       </div>
 
       <!-- STEP 3 — PRO + AI -->
@@ -2340,7 +2340,7 @@
     <h2 class="cta-title">Your tune has a story. <span style="background:linear-gradient(135deg,#ff0055,#ff6a00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Read it.</span></h2>
     <p class="cta-sub">Download Boost LogiX free. Analyse unlimited logs. No credit card. No time limit.</p>
     <div class="cta-buttons">
-      <a href="https://pub-63be5df14f0e4cb3bcf4630949633ae3.r2.dev/v1.0.2-beta.6/Boost-LogiX-Setup-1.0.2-beta.6.exe" class="btn-primary">⬇ Download for Windows</a>
+      <a href="#" class="btn-primary" onclick="csbRegisterRedirect(event)">⬇ Download for Windows</a>
     </div>
     <p class="platform-note">Windows 10 / 11 &bull; Requires EvoScan</p>
   </section>
@@ -2398,7 +2398,7 @@
         <span class="support-card-icon">⬇️</span>
         <div class="support-card-title">Download</div>
         <p class="support-card-desc">Download the latest version of Boost LogiX for Windows. Free to get started.</p>
-        <a href="https://pub-63be5df14f0e4cb3bcf4630949633ae3.r2.dev/v1.0.2-beta.6/Boost-LogiX-Setup-1.0.2-beta.6.exe" class="support-card-link">Download for Windows</a>
+        <a href="#" class="support-card-link" onclick="csbRegisterRedirect(event)">Download for Windows</a>
       </div>
     </div>
   </section>
@@ -2764,6 +2764,35 @@
       setBannerHeight()
       window.addEventListener('resize', setBannerHeight)
     })()
+
+    function csbRegisterRedirect(e) {
+      e.preventDefault()
+      // Restore banner if dismissed
+      const banner = document.getElementById('coming-soon-banner')
+      if (banner.classList.contains('dismissed')) {
+        banner.classList.remove('dismissed')
+        document.body.classList.add('has-banner')
+        setBannerHeightGlobal()
+        sessionStorage.removeItem('csb-dismissed')
+      }
+      // Scroll to top and focus email input
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      setTimeout(() => {
+        const input = document.getElementById('csb-email')
+        if (input) {
+          input.focus()
+          // Pulse the banner briefly
+          banner.style.boxShadow = '0 4px 60px rgba(255,0,85,0.6), 0 0 120px rgba(255,0,85,0.2)'
+          setTimeout(() => { banner.style.boxShadow = '' }, 800)
+        }
+      }, 400)
+    }
+
+    function setBannerHeightGlobal() {
+      const banner = document.getElementById('coming-soon-banner')
+      const h = banner.classList.contains('dismissed') ? 0 : banner.offsetHeight
+      document.documentElement.style.setProperty('--banner-h', h + 'px')
+    }
 
     function csbDismiss() {
       const banner = document.getElementById('coming-soon-banner')
