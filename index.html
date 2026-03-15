@@ -47,6 +47,127 @@
     .glow-cyan { text-shadow: 0 0 20px rgba(0,229,255,0.8), 0 0 60px rgba(0,229,255,0.4); }
 
     /* ══════════════════════════════════════════════════════════
+       COMING SOON BANNER
+    ══════════════════════════════════════════════════════════ */
+    #coming-soon-banner {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      background: linear-gradient(135deg, #04040d 0%, #0d0020 50%, #04040d 100%);
+      border-bottom: 1px solid rgba(255,0,85,0.4);
+      box-shadow: 0 4px 40px rgba(255,0,85,0.2), 0 0 80px rgba(255,0,85,0.08);
+      padding: 28px 40px 32px;
+      text-align: center;
+      transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+    #coming-soon-banner.dismissed {
+      transform: translateY(-110%);
+    }
+    .csb-eyebrow {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      opacity: 0.85;
+    }
+    .csb-headline {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 900;
+      letter-spacing: 4px;
+      background: linear-gradient(90deg, #ff0055 0%, #ff6a00 50%, #ff0055 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: csb-shimmer 3s linear infinite;
+      margin-bottom: 8px;
+      line-height: 1.1;
+    }
+    @keyframes csb-shimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    .csb-sub {
+      font-size: 16px;
+      color: #aaaacc;
+      margin-bottom: 22px;
+      letter-spacing: 0.5px;
+    }
+    .csb-sub strong { color: var(--cyan); }
+    .csb-form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      max-width: 520px;
+      margin: 0 auto 14px;
+    }
+    .csb-input {
+      flex: 1;
+      min-width: 220px;
+      padding: 13px 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,0,85,0.35);
+      border-radius: 6px;
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .csb-input::placeholder { color: #556; }
+    .csb-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 16px rgba(255,0,85,0.25);
+    }
+    .csb-btn {
+      padding: 13px 28px;
+      background: linear-gradient(90deg, #ff0055, #ff6a00);
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 0 20px rgba(255,0,85,0.35);
+    }
+    .csb-btn:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 4px 24px rgba(255,0,85,0.5); }
+    .csb-btn:active { transform: translateY(0); }
+    .csb-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .csb-msg {
+      font-size: 13px;
+      min-height: 18px;
+      color: #aaaacc;
+      letter-spacing: 0.5px;
+    }
+    .csb-msg.success { color: var(--safe); }
+    .csb-msg.error   { color: var(--accent); }
+    .csb-dismiss {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 11px;
+      color: #445;
+      cursor: pointer;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .csb-dismiss:hover { color: #778; border-color: #778; }
+
+    /* Push all page content down by banner height */
+    body.has-banner nav { top: var(--banner-h, 0px); }
+    body.has-banner { padding-top: calc(var(--banner-h, 0px) + 64px); }
+
+    /* ══════════════════════════════════════════════════════════
        NAV
     ══════════════════════════════════════════════════════════ */
     nav {
@@ -1513,6 +1634,19 @@
 </head>
 <body>
 
+  <!-- ══ COMING SOON BANNER ══ -->
+  <div id="coming-soon-banner">
+    <div class="csb-eyebrow">⚡ Launching Soon</div>
+    <div class="csb-headline orbitron">Coming Soon</div>
+    <div class="csb-sub">Be the first to know when Boost LogiX drops.<br><strong>Early access, launch discounts, and beta spots</strong> go to the list first.</div>
+    <form class="csb-form" id="csb-form" onsubmit="csbSubmit(event)">
+      <input class="csb-input" type="email" id="csb-email" placeholder="your@email.com" required autocomplete="email" />
+      <button class="csb-btn" type="submit" id="csb-submit-btn">NOTIFY ME</button>
+    </form>
+    <div class="csb-msg" id="csb-msg"></div>
+    <div class="csb-dismiss" onclick="csbDismiss()">I'll check back later ↓</div>
+  </div>
+
   <!-- ══ Global background particles ══ -->
   <canvas id="particles-canvas"></canvas>
 
@@ -2609,6 +2743,77 @@
       document.body.style.overflow = ''
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox() })
+
+    // ── Coming Soon Banner ─────────────────────────────────────
+    ;(function() {
+      const banner = document.getElementById('coming-soon-banner')
+
+      function setBannerHeight() {
+        const h = banner.classList.contains('dismissed') ? 0 : banner.offsetHeight
+        document.documentElement.style.setProperty('--banner-h', h + 'px')
+      }
+
+      // Restore dismissed state from sessionStorage (resets each new browser session)
+      if (sessionStorage.getItem('csb-dismissed') === '1') {
+        banner.classList.add('dismissed')
+        document.body.classList.remove('has-banner')
+      } else {
+        document.body.classList.add('has-banner')
+      }
+
+      setBannerHeight()
+      window.addEventListener('resize', setBannerHeight)
+    })()
+
+    function csbDismiss() {
+      const banner = document.getElementById('coming-soon-banner')
+      banner.classList.add('dismissed')
+      document.body.classList.remove('has-banner')
+      document.documentElement.style.setProperty('--banner-h', '0px')
+      sessionStorage.setItem('csb-dismissed', '1')
+    }
+
+    async function csbSubmit(e) {
+      e.preventDefault()
+      const email = document.getElementById('csb-email').value.trim()
+      const btn   = document.getElementById('csb-submit-btn')
+      const msg   = document.getElementById('csb-msg')
+
+      if (!email) return
+      btn.disabled = true
+      btn.textContent = 'SENDING...'
+      msg.textContent = ''
+      msg.className = 'csb-msg'
+
+      try {
+        const res = await fetch('https://oqycpvezifdaqxfpllav.supabase.co/rest/v1/waitlist', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9xeWNwdmV6aWZkYXF4ZnBsbGF2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMxMzAzMjUsImV4cCI6MjA4ODcwNjMyNX0.wjj8LJ9ree9LfRCxDnhyTfNLnFW0WF1VkSyqzzAbOUo',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ email })
+        })
+
+        if (res.status === 201) {
+          msg.textContent = "✓ You're on the list — we'll be in touch!"
+          msg.className = 'csb-msg success'
+          document.getElementById('csb-form').style.display = 'none'
+        } else if (res.status === 409) {
+          msg.textContent = "✓ You're already on the list."
+          msg.className = 'csb-msg success'
+          document.getElementById('csb-form').style.display = 'none'
+        } else {
+          throw new Error('unexpected status ' + res.status)
+        }
+      } catch (err) {
+        msg.textContent = 'Something went wrong — try again or email us directly.'
+        msg.className = 'csb-msg error'
+        btn.disabled = false
+        btn.textContent = 'NOTIFY ME'
+      }
+    }
   </script>
 </body>
 </html>
